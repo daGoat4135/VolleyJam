@@ -12,7 +12,7 @@ import {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get all players
   app.get("/api/players", async (_req: Request, res: Response) => {
-    const players = await storage.getAllPlayers(); // Assuming getAllPlayers is implemented in storage
+    const players = await storage.getPlayers(); // Get all players using the correct method
     res.json(players);
   });
 
