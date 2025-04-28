@@ -18,8 +18,8 @@ const TeamSection: React.FC<TeamSectionProps> = ({
 }) => {
   const isWest = division === 'west';
   const headerColor = isWest ? 'from-[#FF4D4D]' : 'from-[#4169E1]';
-  const borderColor = isWest ? 'border-[#4169E1]' : 'border-[#FF4D4D]';
-  const textColor = isWest ? 'text-[#4169E1]' : 'text-[#FF4D4D]';
+  const borderColor = isWest ? 'border-[#FF4D4D]' : 'border-[#4169E1]';
+  const textColor = isWest ? 'text-[#FF4D4D]' : 'text-[#4169E1]';
 
   const handlePlayerClick = (player: Player) => {
     playSound('select');
