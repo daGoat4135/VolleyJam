@@ -99,7 +99,7 @@ const SelectionScreen: React.FC = () => {
         <p className="font-digital text-sm text-gray-400">Choose 2 players from each side</p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Team 1 */}
         <TeamSection
           division="west"
@@ -107,7 +107,14 @@ const SelectionScreen: React.FC = () => {
           selectedPlayers={selectedWestPlayers}
           onPlayerSelect={handleWestPlayerSelect}
         />
-        
+      </div>
+      
+      {/* VS Section */}
+      <div className="vs-section flex justify-center my-4">
+        <div className="vs-flash font-arcade text-4xl md:text-6xl text-[#FFD700]">VS</div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
         {/* Team 2 */}
         <TeamSection
           division="east"
@@ -115,11 +122,6 @@ const SelectionScreen: React.FC = () => {
           selectedPlayers={selectedEastPlayers}
           onPlayerSelect={handleEastPlayerSelect}
         />
-      </div>
-      
-      {/* VS Section */}
-      <div className="vs-section flex justify-center mb-8 mt-4">
-        <div className="vs-flash font-arcade text-4xl md:text-6xl text-[#FFD700]">VS</div>
       </div>
       
       {/* Continue Button */}
