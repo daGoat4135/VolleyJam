@@ -66,10 +66,6 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
               className={`object-cover ${sizeClasses.small.image}`}
             />
           </PixelBorder>
-          <div className={`absolute bottom-0 left-0 right-0 bg-black text-center font-arcade py-1 text-[10px] 
-                         ${isSelected ? 'text-[#FFD700]' : 'text-white'}`}>
-            {player.name}
-          </div>
         </div>
       </div>
     );
@@ -90,10 +86,6 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
             className="w-full h-full object-cover"
           />
         </PixelBorder>
-        <div className={`absolute bottom-0 left-0 right-0 bg-black text-center font-arcade py-1 text-xs
-                       ${isSelected ? 'text-[#FFD700]' : 'text-white'}`}>
-          {player.name}
-        </div>
       </div>
       <div className="player-stats w-2/3 pl-2 flex flex-col justify-center">
         <div className="stat mb-2">
