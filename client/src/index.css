@@ -222,6 +222,19 @@
   .border-golden-yellow {
     border-color: #FFD700;
   }
+  
+  .shadow-glow {
+    box-shadow: 0 0 10px 3px currentColor;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 1.5s infinite;
+  }
+  
+  .tap-highlight {
+    -webkit-tap-highlight-color: rgba(255, 215, 0, 0.5);
+  }
 }
 
 @keyframes selected {
