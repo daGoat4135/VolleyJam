@@ -50,7 +50,6 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
 
   const selectedBorderColor = isSelected ? 'border-[#FFD700]' : 'border-transparent';
   const selectedGlow = isSelected ? 'shadow-glow shadow-[#FFD700]' : '';
-  const divisionColor = player.division === 'West' ? '#FF0000' : '#0000FF';
 
   if (size === 'small') {
     return (
@@ -60,7 +59,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
         {...commonProps}
       >
         <div className={`relative border-2 ${selectedBorderColor} rounded transition-all duration-200`}>
-          <PixelBorder color={isSelected ? '#FFD700' : divisionColor}>
+          <PixelBorder color={isSelected ? '#FFD700' : '#4169E1'}>
             <img 
               src={player.avatarUrl} 
               alt={`${player.name}`} 
@@ -84,7 +83,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
       {...commonProps}
     >
       <div className={`player-image ${sizeClasses[size].image} relative`}>
-        <PixelBorder color={isSelected ? '#FFD700' : divisionColor}>
+        <PixelBorder color={isSelected ? '#FFD700' : '#4169E1'}>
           <img 
             src={player.avatarUrl} 
             alt={`${player.name}`} 
