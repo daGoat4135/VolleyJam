@@ -59,7 +59,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
         {...commonProps}
       >
         <div className={`relative border-2 ${selectedBorderColor} rounded transition-all duration-200`}>
-          <PixelBorder color={isSelected ? '#FFD700' : '#4169E1'}>
+          <PixelBorder color={isSelected ? '#FFD700' : '#8A2BE2'}>
             <img 
               src={player.avatarUrl} 
               alt={`${player.name}`} 
@@ -83,7 +83,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
       {...commonProps}
     >
       <div className={`player-image ${sizeClasses[size].image} relative`}>
-        <PixelBorder color={isSelected ? '#FFD700' : '#4169E1'}>
+        <PixelBorder color={isSelected ? '#FFD700' : '#8A2BE2'}>
           <img 
             src={player.avatarUrl} 
             alt={`${player.name}`} 
