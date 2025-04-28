@@ -12,7 +12,13 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  // Ensure we're using the correct protocol (same as the page)
+  // This helps with Replit preview/deploy where HTTPS is used
+  const fullUrl = url.startsWith('http') 
+    ? url 
+    : `${window.location.origin}${url}`;
+    
+  const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -29,7 +35,14 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
+    // Ensure we're using the correct protocol (same as the page)
+    // This helps with Replit preview/deploy where HTTPS is used
+    const url = queryKey[0] as string;
+    const fullUrl = url.startsWith('http') 
+      ? url 
+      : `${window.location.origin}${url}`;
+      
+    const res = await fetch(fullUrl, {
       credentials: "include",
     });
 
