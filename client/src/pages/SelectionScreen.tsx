@@ -118,8 +118,8 @@ const SelectionScreen: React.FC = () => {
       </div>
       
       {/* VS Section */}
-      <div className="vs-section flex justify-center mb-8">
-        <div className="vs-flash font-arcade text-4xl md:text-6xl text-[#FF4D4D]">VS</div>
+      <div className="vs-section flex justify-center mb-8 mt-4">
+        <div className="vs-flash font-arcade text-4xl md:text-6xl text-[#FFD700]">VS</div>
       </div>
       
       {/* Continue Button */}
