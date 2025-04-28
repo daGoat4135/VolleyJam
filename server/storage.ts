@@ -195,7 +195,7 @@ export class MemStorage implements IStorage {
     // West Division Players
     const westPlayers: InsertPlayer[] = [
       {
-        name: "KEMP",
+        name: "ALEX",
         division: "west",
         team: "SEATTLE",
         speed: 7,
@@ -203,7 +203,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "SCHREMPF",
+        name: "AMBER",
         division: "west",
         team: "SEATTLE",
         speed: 6,
@@ -211,7 +211,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1508341591423-4347099e1f19?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "PAYTON",
+        name: "ANTHONY",
         division: "west",
         team: "SACRAMENTO",
         speed: 9,
@@ -219,7 +219,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1534308143481-c55f00be8bd7?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "WEBB",
+        name: "BILLY",
         division: "west",
         team: "SACRAMENTO",
         speed: 8,
@@ -227,7 +227,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "HARDAWAY",
+        name: "DANNY",
         division: "west",
         team: "GOLDEN STATE",
         speed: 8,
@@ -235,7 +235,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "WOODS",
+        name: "HUGO",
         division: "west",
         team: "LA LAKERS",
         speed: 6,
@@ -247,15 +247,15 @@ export class MemStorage implements IStorage {
     // East Division Players
     const eastPlayers: InsertPlayer[] = [
       {
-        name: "MILLER",
+        name: "JM",
         division: "east",
         team: "INDIANA",
         speed: 8,
         power: 7,
-        avatarUrl: "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-W8F0TABBJ-3de64a384b81-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "MCKEY",
+        name: "JORDAN",
         division: "east",
         team: "INDIANA",
         speed: 6,
@@ -263,7 +263,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "JOHNSON",
+        name: "KELLY",
         division: "east",
         team: "CHARLOTTE",
         speed: 7,
@@ -271,7 +271,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "LEWIS",
+        name: "KYLE",
         division: "east",
         team: "BOSTON",
         speed: 9,
@@ -279,7 +279,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1530268729831-4b0b9e170218?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "GRANT",
+        name: "MARK",
         division: "east",
         team: "CHICAGO",
         speed: 8,
@@ -287,7 +287,7 @@ export class MemStorage implements IStorage {
         avatarUrl: "https://images.unsplash.com/photo-1503235930437-8c6293ba41f5?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
-        name: "THOMAS",
+        name: "SACHIN",
         division: "east",
         team: "DETROIT",
         speed: 10,
