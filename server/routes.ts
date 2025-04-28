@@ -12,16 +12,10 @@ import {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get all players
   app.get("/api/players", async (_req: Request, res: Response) => {
-    const players = await storage.getPlayers();
+    const players = await storage.getAllPlayers(); // Assuming getAllPlayers is implemented in storage
     res.json(players);
   });
 
-  // Get players by division
-  app.get("/api/players/:division", async (req: Request, res: Response) => {
-    const { division } = req.params;
-    const players = await storage.getPlayersByDivision(division);
-    res.json(players);
-  });
 
   // Get a specific player
   app.get("/api/player/:id", async (req: Request, res: Response) => {
@@ -43,21 +37,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const matchData = insertMatchSchema.parse(req.body);
       const match = await storage.createMatch(matchData);
-      
+
       // Create first set automatically
       const setData = {
         matchId: match.id,
         setNumber: 1
       };
       const set = await storage.createSet(setData);
-      
+
       // Add initial log message
       await storage.createGameLog({
         matchId: match.id,
         setId: set.id,
         message: "Match started! First to 21 points wins."
       });
-      
+
       res.status(201).json(match);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -87,7 +81,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     res.json(match);
   });
-  
+
   // Update match (for completing or setting MVP)
   app.patch("/api/matches/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
@@ -106,10 +100,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         winningDivision: z.string().optional(),
         mvpPlayerId: z.number().optional()
       });
-      
+
       const updateData = updateSchema.parse(req.body);
       const updatedMatch = await storage.updateMatch(id, updateData);
-      
+
       res.json(updatedMatch);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -135,14 +129,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const setData = insertSetSchema.parse(req.body);
       const set = await storage.createSet(setData);
-      
+
       // Add initial log message for new set
       await storage.createGameLog({
         matchId: set.matchId,
         setId: set.id,
         message: `Set ${set.setNumber} started!`
       });
-      
+
       res.status(201).json(set);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -167,7 +161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const updateData = updateSetSchema.parse(req.body);
       const updatedSet = await storage.updateSet(id, updateData);
-      
+
       res.json(updatedSet);
     } catch (error) {
       if (error instanceof z.ZodError) {

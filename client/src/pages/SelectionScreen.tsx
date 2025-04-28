@@ -17,18 +17,10 @@ const SelectionScreen: React.FC = () => {
   const [selectedWestPlayers, setSelectedWestPlayers] = useState<Player[]>([]);
   const [selectedEastPlayers, setSelectedEastPlayers] = useState<Player[]>([]);
   
-  // Fetch players data
-  const { data: westPlayers = [], isLoading: isLoadingWest } = useQuery<Player[]>({
-    queryKey: ['/api/players/west'],
+  // Fetch all players data
+  const { data: allPlayers = [], isLoading: isLoadingPlayers } = useQuery<Player[]>({
+    queryKey: ['/api/players'],
   });
-  
-  const { data: eastPlayers = [], isLoading: isLoadingEast } = useQuery<Player[]>({
-    queryKey: ['/api/players/east'],
-  });
-  
-  // Extract unique teams from players
-  const westTeams = Array.from(new Set(westPlayers.map(player => player.team)));
-  const eastTeams = Array.from(new Set(eastPlayers.map(player => player.team)));
   
   // Handle player selection
   const handleWestPlayerSelect = (player: Player) => {
@@ -108,20 +100,18 @@ const SelectionScreen: React.FC = () => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-        {/* West Division */}
+        {/* Team 1 */}
         <TeamSection
           division="west"
-          players={westPlayers}
-          teams={westTeams}
+          players={allPlayers}
           selectedPlayers={selectedWestPlayers}
           onPlayerSelect={handleWestPlayerSelect}
         />
         
-        {/* East Division */}
+        {/* Team 2 */}
         <TeamSection
           division="east"
-          players={eastPlayers}
-          teams={eastTeams}
+          players={allPlayers}
           selectedPlayers={selectedEastPlayers}
           onPlayerSelect={handleEastPlayerSelect}
         />
