@@ -1,0 +1,251 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-267oIAQAu6jDQyK3nVivNm4I81.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/orbitron/v31/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1nyGy6BoWgz.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 0 100% 65%; /* Arcade red */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 70% 56%; /* Electric blue */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 45 100% 50%; /* Golden yellow */
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 0 100% 65%; /* Arcade red */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 70% 56%; /* Electric blue */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 45 100% 50%; /* Golden yellow */
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    font-family: sans-serif;
+    @apply bg-background text-foreground;
+    background-color: #000000;
+    background-image: linear-gradient(rgba(10, 10, 50, 0.3) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(10, 10, 50, 0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+    overflow-x: hidden;
+  }
+
+  /* Arcade font classes */
+  .font-arcade {
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  .font-digital {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+@layer components {
+  /* Scanlines effect */
+  .scanlines::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.2;
+  }
+
+  /* Chrome text effect */
+  .chrome-text {
+    background: linear-gradient(to bottom, #FFF 0%, #A0A0A0 50%, #FFF 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.7));
+  }
+
+  /* Pixel border */
+  .pixel-border {
+    box-shadow: 
+      0 0 0 2px #000, 
+      0 0 0 4px theme('colors.accent.DEFAULT');
+  }
+
+  /* Player card styles */
+  .player-card {
+    background: linear-gradient(135deg, #333 0%, #111 100%);
+    transition: all 0.3s ease;
+  }
+
+  .player-card:hover {
+    transform: scale(1.05);
+  }
+
+  .player-card.selected {
+    animation: selected 0.5s infinite;
+  }
+
+  /* Stat bar */
+  .stat-bar {
+    height: 10px;
+    position: relative;
+    box-shadow: 0 0 6px 2px rgba(65, 105, 225, 0.5) inset;
+  }
+
+  .stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, theme('colors.secondary.DEFAULT'), #8ca9ff);
+    box-shadow: 0 0 10px 2px theme('colors.secondary.DEFAULT');
+  }
+
+  /* VS flash animation */
+  .vs-flash {
+    animation: pulse-glow 1.5s infinite;
+    filter: drop-shadow(0 0 15px theme('colors.primary.DEFAULT'));
+  }
+
+  /* Screen transitions */
+  .screen-container {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .active-screen {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Team header */
+  .team-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .team-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    animation: shine 3s infinite;
+  }
+}
+
+@layer utilities {
+  .arcade-red {
+    color: #FF4D4D;
+  }
+  
+  .electric-blue {
+    color: #4169E1;
+  }
+  
+  .golden-yellow {
+    color: #FFD700;
+  }
+  
+  .bg-arcade-red {
+    background-color: #FF4D4D;
+  }
+  
+  .bg-electric-blue {
+    background-color: #4169E1;
+  }
+  
+  .bg-golden-yellow {
+    background-color: #FFD700;
+  }
+  
+  .border-arcade-red {
+    border-color: #FF4D4D;
+  }
+  
+  .border-electric-blue {
+    border-color: #4169E1;
+  }
+  
+  .border-golden-yellow {
+    border-color: #FFD700;
+  }
+}
+
+@keyframes selected {
+  0%, 100% { box-shadow: 0 0 15px theme('colors.accent.DEFAULT'); }
+  50% { box-shadow: 0 0 25px theme('colors.accent.DEFAULT'), 0 0 35px theme('colors.accent.DEFAULT'); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { filter: drop-shadow(0 0 5px theme('colors.secondary.DEFAULT')); }
+  50% { filter: drop-shadow(0 0 15px theme('colors.secondary.DEFAULT')); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes scanline {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 1000px; }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  60% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
