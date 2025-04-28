@@ -64,9 +64,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
       </div>
 
       {/* Selected Players */}
-      <div className={`player-selection bg-gradient-to-r from-black to-gray-900 p-3 border-2 ${
-  isWestTeam ? 'border-[#FF4D4D]' : 'border-[#4169E1]'
-}`}>
+      <div className={`player-selection bg-gradient-to-r from-black to-gray-900 p-3 border-2 ${borderColor}`}>
         <h4 className={`font-arcade text-sm mb-4 ${textColor}`}>SELECTED PLAYERS</h4>
 
         <div className="grid grid-cols-2 gap-4">
