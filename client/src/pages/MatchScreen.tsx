@@ -32,6 +32,23 @@ const MatchScreen: React.FC = () => {
     queryKey: ['/api/players'],
   });
 
+  // Fetch sets data
+  const { data: sets } = useQuery<Set[]>({
+    queryKey: [`/api/matches/${matchId}/sets`],
+    enabled: matchId > 0,
+  });
+
+  // Update set mutation
+  const updateSetMutation = useMutation({
+    mutationFn: async (data: { id: number } & UpdateSet) => {
+      const response = await apiRequest('PATCH', `/api/sets/${data.id}`, data);
+      return await response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/matches/${matchId}/sets`] });
+    },
+  });
+
   // Update match mutation
   const updateMatchMutation = useMutation({
     mutationFn: async (data: Partial<Match>) => {
@@ -66,6 +83,20 @@ const MatchScreen: React.FC = () => {
       // MVP could be determined by another algorithm
       mvpPlayerId: winningDivision === 'west' ? matchData?.westPlayer1Id : matchData?.eastPlayer1Id
     });
+
+    // Update the final set with scores
+    if (matchData) {
+      const latestSet = sets?.[sets.length - 1];
+      if (latestSet) {
+        updateSetMutation.mutate({
+          id: latestSet.id,
+          westScore,
+          eastScore,
+          winningDivision,
+          isComplete: true
+        });
+      }
+    }
 
     playSound('win');
   };
