@@ -67,12 +67,13 @@ const TeamSection: React.FC<TeamSectionProps> = ({
         {teams.map((team) => (
           <div 
             key={team}
-            className={`player-card p-2 rounded cursor-pointer transition-all duration-200 ${
+            className={`player-card p-2 rounded cursor-pointer transition-all duration-200 tap-highlight ${
               selectedTeam === team ? `${bgColor} border border-[#FFD700]` : 'border border-transparent'
             }`}
             data-team={team.toLowerCase().replace(' ', '-')}
             onClick={() => handleTeamClick(team)}
-            role="button"
+            onTouchStart={() => {}} /* Empty handler to activate active state on iOS */
+            role="button" 
             tabIndex={0}
           >
             <div className={`text-center font-arcade text-xs ${highlightColor} mb-1`}>
@@ -92,10 +93,11 @@ const TeamSection: React.FC<TeamSectionProps> = ({
           {displayedPlayers.map((player) => (
             <div 
               key={player.id}
-              className={`player-item p-2 cursor-pointer transition-colors duration-200 ${
+              className={`player-item p-2 cursor-pointer transition-colors duration-200 tap-highlight ${
                 isPlayerSelected(player) ? 'bg-[#FFD700]/20' : 'hover:bg-gray-800'
               }`}
               onClick={() => handlePlayerClick(player)}
+              onTouchStart={() => {}} /* Empty handler to activate active state on iOS */
               role="button"
               tabIndex={0}
             >

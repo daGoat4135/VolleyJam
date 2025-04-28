@@ -39,6 +39,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
     onClick,
     role: "button",
     tabIndex: 0,
+    onTouchStart: () => {}, /* Empty handler to activate active state on iOS */
     onKeyDown: (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
