@@ -51,22 +51,7 @@ const MatchScreen: React.FC = () => {
     return players.find(p => p.id === id);
   };
 
-  const updateScore = (team: 'west' | 'east', action: 'add' | 'subtract') => {
-    if (action === 'add') {
-      if (team === 'west') {
-        setWestScore(prev => prev + 1);
-      } else {
-        setEastScore(prev => prev + 1);
-      }
-      playSound('score');
-    } else if (action === 'subtract') {
-      if (team === 'west' && westScore > 0) {
-        setWestScore(prev => prev - 1);
-      } else if (team === 'east' && eastScore > 0) {
-        setEastScore(prev => prev - 1);
-      }
-    }
-  };
+  
 
   const handleEndGame = () => {
     const winningDivision = westScore > eastScore ? 'west' : 'east';
@@ -136,23 +121,14 @@ const MatchScreen: React.FC = () => {
           </div>
 
           <div className="score-display">
-            <div className="text-center font-digital text-5xl text-[#FF4D4D] mb-2" id="west-score">
-              {westScore}
-            </div>
-            <div className="buttons grid grid-cols-2 gap-2">
-              <Button
-                className="score-btn font-arcade text-xs bg-[#4169E1] py-2 rounded hover:bg-opacity-80"
-                onClick={() => updateScore('west', 'add')}
-              >
-                +1 POINT
-              </Button>
-              <Button
-                className="score-btn font-arcade text-xs bg-gray-700 py-2 rounded hover:bg-opacity-80"
-                onClick={() => updateScore('west', 'subtract')}
-                disabled={westScore <= 0}
-              >
-                -1 POINT
-              </Button>
+            <div className="text-center mb-2">
+              <Input
+                type="number"
+                min="0"
+                value={westScore}
+                onChange={(e) => setWestScore(parseInt(e.target.value) || 0)}
+                className="font-digital text-4xl text-center text-[#FF4D4D] w-32 mx-auto"
+              />
             </div>
           </div>
         </div>
@@ -206,23 +182,14 @@ const MatchScreen: React.FC = () => {
           </div>
 
           <div className="score-display">
-            <div className="text-center font-digital text-5xl text-[#4169E1] mb-2" id="east-score">
-              {eastScore}
-            </div>
-            <div className="buttons grid grid-cols-2 gap-2">
-              <Button
-                className="score-btn font-arcade text-xs bg-[#FF4D4D] py-2 rounded hover:bg-opacity-80"
-                onClick={() => updateScore('east', 'add')}
-              >
-                +1 POINT
-              </Button>
-              <Button
-                className="score-btn font-arcade text-xs bg-gray-700 py-2 rounded hover:bg-opacity-80"
-                onClick={() => updateScore('east', 'subtract')}
-                disabled={eastScore <= 0}
-              >
-                -1 POINT
-              </Button>
+            <div className="text-center mb-2">
+              <Input
+                type="number"
+                min="0"
+                value={eastScore}
+                onChange={(e) => setEastScore(parseInt(e.target.value) || 0)}
+                className="font-digital text-4xl text-center text-[#4169E1] w-32 mx-auto"
+              />
             </div>
           </div>
         </div>
