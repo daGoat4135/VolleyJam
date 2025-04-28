@@ -50,6 +50,8 @@ export const matches = pgTable("matches", {
   isComplete: boolean("is_complete").default(false).notNull(),
   winningDivision: text("winning_division"),
   mvpPlayerId: integer("mvp_player_id"),
+  westScore: integer("west_score").default(0),
+  eastScore: integer("east_score").default(0),
 });
 
 export const insertMatchSchema = createInsertSchema(matches).pick({
