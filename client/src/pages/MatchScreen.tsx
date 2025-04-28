@@ -6,6 +6,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { queryClient } from '@/lib/queryClient';
 import { playSound } from '@/assets/arcadeSounds';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { PixelBorder } from '@/components/ui/pixel-border';
 import { useToast } from '@/hooks/use-toast';
 
