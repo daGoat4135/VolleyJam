@@ -200,7 +200,7 @@ export class MemStorage implements IStorage {
         team: "SEATTLE",
         speed: 7,
         power: 8,
-        avatarUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-W8FHWAD19-28509fcb8054-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "AMBER",
@@ -208,7 +208,7 @@ export class MemStorage implements IStorage {
         team: "SEATTLE",
         speed: 6,
         power: 9,
-        avatarUrl: "https://images.unsplash.com/photo-1508341591423-4347099e1f19?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-W01BWS0968H-9d7cc2932f41-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "ANTHONY",
@@ -216,7 +216,7 @@ export class MemStorage implements IStorage {
         team: "SACRAMENTO",
         speed: 9,
         power: 6,
-        avatarUrl: "https://images.unsplash.com/photo-1534308143481-c55f00be8bd7?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-U049L0V1ZSM-89445ae504c8-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "BILLY",
@@ -224,7 +224,7 @@ export class MemStorage implements IStorage {
         team: "SACRAMENTO",
         speed: 8,
         power: 7,
-        avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-W8F0QRF32-56e733279250-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "DANNY",
@@ -232,7 +232,7 @@ export class MemStorage implements IStorage {
         team: "GOLDEN STATE",
         speed: 8,
         power: 7,
-        avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-U02V7C547TJ-2a97e6c82408-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "HUGO",
@@ -240,7 +240,7 @@ export class MemStorage implements IStorage {
         team: "LA LAKERS",
         speed: 6,
         power: 10,
-        avatarUrl: "https://images.unsplash.com/photo-1528892952291-009c663ce843?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-WPC6TL33P-29d2763b9c38-512?w=150&h=150&auto=format&fit=crop&q=80"
       }
     ];
     
@@ -260,7 +260,7 @@ export class MemStorage implements IStorage {
         team: "INDIANA",
         speed: 6,
         power: 9,
-        avatarUrl: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-WTH67L4M8-b9cc0a965acc-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "KELLY",
@@ -268,7 +268,7 @@ export class MemStorage implements IStorage {
         team: "CHARLOTTE",
         speed: 7,
         power: 8,
-        avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-W8F0SAHQ8-fa079931a311-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "KYLE",
@@ -276,7 +276,7 @@ export class MemStorage implements IStorage {
         team: "BOSTON",
         speed: 9,
         power: 6,
-        avatarUrl: "https://images.unsplash.com/photo-1530268729831-4b0b9e170218?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-WHUR0AGLE-f788dffb71dc-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "MARK",
@@ -284,7 +284,7 @@ export class MemStorage implements IStorage {
         team: "CHICAGO",
         speed: 8,
         power: 8,
-        avatarUrl: "https://images.unsplash.com/photo-1503235930437-8c6293ba41f5?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-U07KUEPJ0QL-76c32e407abf-512?w=150&h=150&auto=format&fit=crop&q=80"
       },
       {
         name: "SACHIN",
@@ -292,7 +292,7 @@ export class MemStorage implements IStorage {
         team: "DETROIT",
         speed: 10,
         power: 5,
-        avatarUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150&h=150&auto=format&fit=crop&q=80"
+        avatarUrl: "https://ca.slack-edge.com/E7AN7J5RP-U088E4ZV4EB-g13c95566286-512?w=150&h=150&auto=format&fit=crop&q=80"
       }
     ];
     
