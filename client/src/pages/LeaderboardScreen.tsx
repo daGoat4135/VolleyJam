@@ -129,8 +129,7 @@ const LeaderboardScreen: React.FC = () => {
                       <span className="text-[#FFD700] ml-1">{stat.mvps}</span>
                     </div>
                     <div>
-                      <span className="text-gray-400">GLICKO:</span> 
-                      <span className="text-[#FFD700] ml-1">{stat.glickoScore}</span>
+                      <span className="text-[#FFD700]">{stat.glickoScore}</span>
                     </div>
                   </div>
                 </div>
