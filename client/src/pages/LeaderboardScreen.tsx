@@ -18,19 +18,23 @@ interface PlayerStats {
 const LeaderboardScreen: React.FC = () => {
   const [, navigate] = useLocation();
 
+  // Fetch players data
   const { data: players = [], isLoading: isLoadingPlayers } = useQuery<Player[]>({
     queryKey: ['/api/players'],
   });
 
+  // Fetch matches data
   const { data: matches = [], isLoading: isLoadingMatches } = useQuery<Match[]>({
     queryKey: ['/api/matches'],
   });
 
+  // Calculate player statistics
   const playerStats: PlayerStats[] = React.useMemo(() => {
     if (!players.length || !matches.length) return [];
 
     const stats: Record<number, PlayerStats> = {};
 
+    // Initialize stats for all players
     players.forEach(player => {
       stats[player.id] = {
         player,
@@ -41,34 +45,44 @@ const LeaderboardScreen: React.FC = () => {
       };
     });
 
+    // Count matches and wins
     matches.filter(match => match.isComplete).forEach(match => {
       const winningDivision = match.winningDivision;
       if (!winningDivision) return;
 
+      // Count west team players
       [match.westPlayer1Id, match.westPlayer2Id].forEach(playerId => {
         if (playerId && stats[playerId]) {
           stats[playerId].matches++;
-          if (winningDivision === 'west') stats[playerId].wins++;
+          if (winningDivision === 'west') {
+            stats[playerId].wins++;
+          }
         }
       });
 
+      // Count east team players
       [match.eastPlayer1Id, match.eastPlayer2Id].forEach(playerId => {
         if (playerId && stats[playerId]) {
           stats[playerId].matches++;
-          if (winningDivision === 'east') stats[playerId].wins++;
+          if (winningDivision === 'east') {
+            stats[playerId].wins++;
+          }
         }
       });
 
+      // Count MVPs
       if (match.mvpPlayerId && stats[match.mvpPlayerId]) {
         stats[match.mvpPlayerId].mvps++;
       }
     });
 
+    // Calculate win rates and convert to array
     const statsArray = Object.values(stats).map(stat => ({
       ...stat,
       winRate: stat.matches > 0 ? (stat.wins / stat.matches) * 100 : 0
     }));
 
+    // Sort by win rate
     return statsArray.sort((a, b) => b.winRate - a.winRate);
   }, [players, matches]);
 
@@ -76,6 +90,9 @@ const LeaderboardScreen: React.FC = () => {
     return (
       <div className="w-full max-w-6xl px-4 py-8 text-center">
         <div className="font-arcade text-lg mb-4">LOADING LEADERBOARD...</div>
+        <div className="animate-pulse w-full h-4 bg-gray-700 rounded mb-2"></div>
+        <div className="animate-pulse w-full h-4 bg-gray-700 rounded mb-2"></div>
+        <div className="animate-pulse w-full h-4 bg-gray-700 rounded mb-2"></div>
       </div>
     );
   }
@@ -83,53 +100,75 @@ const LeaderboardScreen: React.FC = () => {
   return (
     <div className="w-full max-w-6xl px-4 py-8">
       <div className="mb-6 text-center">
-        <h2 className="font-arcade text-4xl mb-2">
+        <h2 className="font-arcade text-2xl mb-2">
           <ChromeText>LEADERBOARD</ChromeText>
         </h2>
         <p className="font-digital text-sm text-gray-400">Player Rankings and Stats</p>
       </div>
 
-      <div className="leaderboard space-y-4">
-        {playerStats.map((stat, index) => (
-          <div 
-            key={stat.player.id}
-            className="player-stat bg-black border-2 border-[#FFD700] p-4"
-          >
-            <div className="flex items-center gap-4">
-              <div className="rank font-arcade text-[#FFD700] text-2xl">
-                {index + 1}
-              </div>
-              <PixelBorder>
-                <img src={stat.player.avatarUrl} alt={stat.player.name} className="w-16 h-16 object-cover" />
-              </PixelBorder>
-              <div className="flex-grow">
-                <div className="font-arcade text-lg mb-1">
-                  {stat.player.name} <span className="text-gray-500">({stat.player.division.toUpperCase()})</span>
+      <div className="leaderboard bg-gradient-to-b from-gray-900 to-black border-2 border-[#FFD700] p-4 mb-8">
+        <div className="grid grid-cols-1 gap-4">
+          {playerStats.length > 0 ? (
+            playerStats.map((stat, index) => (
+              <div 
+                key={stat.player.id}
+                className="player-stat flex items-center bg-black p-3 border border-gray-800"
+              >
+                <div className="rank font-digital text-xl mr-4 text-[#FFD700] w-8 text-center">
+                  {index + 1}
                 </div>
-                <div className="font-digital text-sm space-x-4">
-                  <span>Win Rate: {stat.winRate.toFixed(0)}%</span>
-                  <span>W/L: {stat.wins}/{stat.matches - stat.wins}</span>
-                  <span>MVP: {stat.mvps}</span>
+                <div className="player-image mr-4">
+                  <PixelBorder>
+                    <img src={stat.player.avatarUrl} alt={stat.player.name} className="w-12 h-12 object-cover" />
+                  </PixelBorder>
                 </div>
-                <div className="mt-2 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="font-digital text-sm w-16">SPEED</span>
-                    <StatBar value={stat.player.speed} maxValue={10} />
-                    <span className="font-digital text-sm">{stat.player.speed}</span>
+                <div className="player-info flex-grow">
+                  <div className="font-arcade text-sm mb-1">
+                    {stat.player.name} 
+                    <span className="text-xs ml-2 text-gray-500">({stat.player.division.toUpperCase()})</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-digital text-sm w-16">POWER</span>
-                    <StatBar value={stat.player.power} maxValue={10} />
-                    <span className="font-digital text-sm">{stat.player.power}</span>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs font-digital">
+                    <div>
+                      <span className="text-gray-400">Win Rate:</span> 
+                      <span className="text-[#FFD700] ml-1">{stat.winRate.toFixed(0)}%</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-400">W/L:</span> 
+                      <span className="ml-1">{stat.wins}/{stat.matches - stat.wins}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-400">MVP:</span> 
+                      <span className="text-[#FFD700] ml-1">{stat.mvps}</span>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex flex-col md:flex-row gap-2">
+                    <div className="stat flex-1">
+                      <div className="flex justify-between text-xs font-digital mb-1">
+                        <span className="text-gray-400">SPEED</span>
+                        <span>{stat.player.speed}</span>
+                      </div>
+                      <StatBar value={stat.player.speed} maxValue={10} />
+                    </div>
+                    <div className="stat flex-1">
+                      <div className="flex justify-between text-xs font-digital mb-1">
+                        <span className="text-gray-400">POWER</span>
+                        <span>{stat.player.power}</span>
+                      </div>
+                      <StatBar value={stat.player.power} maxValue={10} />
+                    </div>
                   </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center font-arcade text-sm py-8 text-gray-500">
+              NO MATCH DATA AVAILABLE
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
 
-      <div className="text-center mt-8">
+      <div className="action-buttons flex justify-center space-x-4">
         <Button
           className="font-arcade px-6 py-2 bg-[#FF4D4D] text-white rounded hover:bg-opacity-80"
           onClick={() => navigate('/')}
