@@ -152,6 +152,12 @@ const ResultScreen: React.FC = () => {
         >
           NEW MATCH
         </Button>
+        <Button
+          className="font-arcade px-6 py-3 bg-[#FFD700] text-black rounded mt-4 md:mt-0 hover:bg-opacity-80"
+          onClick={() => navigate('/leaderboard')}
+        >
+          VIEW LEADERBOARD
+        </Button>
       </div>
     </div>
   );
