@@ -121,8 +121,7 @@ const LeaderboardScreen: React.FC = () => {
                       <span className="text-[#FFD700] ml-1">{stat.winRate.toFixed(0)}%</span>
                     </div>
                     <div>
-                      <span className="text-gray-400">W/L:</span> 
-                      <span className="ml-1">{stat.wins}/{stat.matches - stat.wins}</span>
+                      <span className="ml-1">{stat.wins}-{stat.matches - stat.wins}</span>
                     </div>
                     <div>
                       <span className="text-gray-400">MVP:</span> 
