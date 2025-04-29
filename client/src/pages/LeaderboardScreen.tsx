@@ -118,6 +118,10 @@ const LeaderboardScreen: React.FC = () => {
                     {stat.player.name}
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm font-arcade">
+                    <div>
+                      <span className="text-gray-400">RATING:</span>
+                      <span className={index < 3 ? 'text-[#FFD700] ml-1' : 'text-white ml-1'}>{stat.glickoScore}</span>
+                    </div>
                     <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
                       <span>{stat.wins}-{stat.matches - stat.wins}</span>
                     </div>
@@ -127,10 +131,6 @@ const LeaderboardScreen: React.FC = () => {
                     <div>
                       <span className="text-gray-400">MVP:</span> 
                       <span className="text-[#FFD700] ml-1">{stat.mvps}</span>
-                    </div>
-                    <div>
-                      <span className="text-gray-400">RATING:</span>
-                      <span className={index < 3 ? 'text-[#FFD700] ml-1' : 'text-white ml-1'}>{stat.glickoScore}</span>
                     </div>
                   </div>
                 </div>
