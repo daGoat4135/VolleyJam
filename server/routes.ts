@@ -1,6 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { ratingEngine } from './ratingEngine';
 import { z } from "zod";
 import { 
   insertMatchSchema, 
@@ -194,6 +195,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.status(500).json({ message: "Failed to create log" });
     }
+  });
+
+  // Get rating settings
+  app.get("/api/rating-settings", (_req: Request, res: Response) => {
+    res.json(ratingEngine.getSettings());
+  });
+
+  // Update rating settings
+  app.post("/api/rating-settings", async (req: Request, res: Response) => {
+    try {
+      const settingsSchema = z.object({
+        dailyBonusAmount: z.number(),
+        kFactor: z.number(),
+        initialRating: z.number(),
+        victoryMarginWeight: z.string()
+      });
+
+      const settings = settingsSchema.parse(req.body);
+      ratingEngine.updateSettings(settings);
+      res.json(settings);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid settings data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update settings" });
+    }
+  });
+
+  // Export ratings as CSV
+  app.get("/api/export-ratings", async (_req: Request, res: Response) => {
+    const players = await storage.getPlayers();
+    const csv = players.map(p => `${p.name},${p.rating},${p.ratingDeviation},${p.volatility}`).join('\n');
+    const headers = 'Name,Rating,RD,Volatility\n';
+    
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename=ratings.csv');
+    res.send(headers + csv);
   });
 
   const httpServer = createServer(app);
