@@ -95,14 +95,14 @@ const SelectionScreen: React.FC = () => {
   return (
     <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4">
       <div className="mb-6 text-center">
-        <h2 className="font-arcade text-lg md:text-2xl mb-1">SELECT YOUR PLAYERS</h2>
-        <p className="font-digital text-sm text-gray-400">Choose 2 players from each side</p>
         <Button
           onClick={() => navigate('/leaderboard')}
-          className="font-arcade mt-4 bg-[#FFD700] text-black hover:bg-opacity-80"
+          className="font-arcade mb-4 bg-[#FFD700] text-black hover:bg-opacity-80"
         >
           VIEW LEADERBOARD
         </Button>
+        <h2 className="font-arcade text-lg md:text-2xl mb-1">SELECT YOUR PLAYERS</h2>
+        <p className="font-digital text-sm text-gray-400">Choose 2 players from each side</p>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
