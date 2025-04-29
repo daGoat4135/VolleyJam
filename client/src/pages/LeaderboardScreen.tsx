@@ -112,15 +112,15 @@ const LeaderboardScreen: React.FC = () => {
                   </PixelBorder>
                 </div>
                 <div className="player-info flex-grow">
-                  <div className="font-arcade text-sm mb-1">
+                  <div className={`font-arcade text-sm mb-1 ${index < 3 ? 'text-[#FFD700]' : 'text-white'}`}>
                     {stat.player.name}
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs font-digital">
-                    <div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm font-arcade">
+                    <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
                       <span>{stat.wins}-{stat.matches - stat.wins}</span>
                     </div>
-                    <div>
-                      <span className="text-[#FFD700]">{(stat.winRate / 100).toFixed(3)}</span>
+                    <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
+                      <span>{(stat.winRate / 100).toFixed(3)}</span>
                     </div>
                     <div>
                       <span className="text-gray-400">MVP:</span> 
