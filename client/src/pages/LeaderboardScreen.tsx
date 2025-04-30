@@ -38,7 +38,7 @@ const LeaderboardScreen: React.FC = () => {
         matches: 0,
         winRate: 0,
         mvps: 0,
-        glickoScore: Math.round(player.rating ?? 1500)
+        glickoScore: Math.round(player.rating !== undefined ? player.rating : 1500)
       };
     });
 
