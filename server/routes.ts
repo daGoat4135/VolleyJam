@@ -109,7 +109,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ]);
 
         // Calculate score difference
-        const scoreDiff = Math.abs(match.westScore - match.eastScore);
+        const westScore = updateData.westScore || 0;
+        const eastScore = updateData.eastScore || 0;
+        const scoreDiff = Math.abs(westScore - eastScore);
 
         // Update ratings for all players
         const isWestWinner = updateData.winningDivision === 'west';
@@ -129,8 +131,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
                 volatility: p?.volatility || ratingEngine.getInitialRating().volatility
               })),
-              [westResult, westResult], // 1 for win, 0 for loss
-              [Math.abs(scoreDiff), Math.abs(scoreDiff)] // Using absolute score difference
+              [westResult, westResult],
+              [scoreDiff, scoreDiff]
             );
             await storage.updatePlayer(westPlayer.id, newRating);
           }
