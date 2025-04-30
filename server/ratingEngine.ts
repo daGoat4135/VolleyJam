@@ -18,9 +18,9 @@ class RatingEngine {
 
   private settings: RatingSettings = {
     dailyBonusAmount: 15,
-    kFactor: 32,
+    kFactor: 200,
     initialRating: 1500,
-    victoryMarginWeight: 'normal'
+    victoryMarginWeight: 'high'
   };
 
   getSettings(): RatingSettings {
