@@ -112,8 +112,7 @@ export default function GameHistoryScreen() {
                     <TableHead className="text-white">East Team</TableHead>
                     <TableHead className="text-white">Final Score</TableHead>
                     <TableHead className="text-white">Winner</TableHead>
-                    <TableHead className="text-white">MVP</TableHead>
-                    <TableHead className="text-white text-right">Actions</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -122,8 +121,7 @@ export default function GameHistoryScreen() {
                     const westPlayer2 = getPlayerNameById(match.westPlayer2Id);
                     const eastPlayer1 = getPlayerNameById(match.eastPlayer1Id);
                     const eastPlayer2 = getPlayerNameById(match.eastPlayer2Id);
-                    const mvpPlayer = getPlayerNameById(match.mvpPlayerId || undefined);
-                    
+
                     return (
                       <TableRow key={match.id} className="hover:bg-gray-800">
                         <TableCell className="text-gray-300">
@@ -146,9 +144,6 @@ export default function GameHistoryScreen() {
                           ) : (
                             <Badge variant="outline">IN PROGRESS</Badge>
                           )}
-                        </TableCell>
-                        <TableCell className="text-[#FFD700]">
-                          {match.mvpPlayerId ? mvpPlayer : 'N/A'}
                         </TableCell>
                         <TableCell className="text-right">
                           <Button 
