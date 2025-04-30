@@ -4,9 +4,7 @@ import { storage } from "./storage";
 import { ratingEngine } from './ratingEngine';
 import { z } from "zod";
 import { 
-  insertMatchSchema, 
-  insertSetSchema, 
-  updateSetSchema, 
+  insertMatchSchema,
   insertGameLogSchema
 } from "@shared/schema";
 
@@ -168,63 +166,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all sets for a match
-  app.get("/api/matches/:matchId/sets", async (req: Request, res: Response) => {
-    const matchId = parseInt(req.params.matchId);
-    if (isNaN(matchId)) {
-      return res.status(400).json({ message: "Invalid match ID" });
-    }
-
-    const sets = await storage.getSets(matchId);
-    res.json(sets);
-  });
-
-  // Create a new set
-  app.post("/api/sets", async (req: Request, res: Response) => {
-    try {
-      const setData = insertSetSchema.parse(req.body);
-      const set = await storage.createSet(setData);
-
-      // Add initial log message for new set
-      await storage.createGameLog({
-        matchId: set.matchId,
-        setId: set.id,
-        message: `Set ${set.setNumber} started!`
-      });
-
-      res.status(201).json(set);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid set data", errors: error.errors });
-      }
-      res.status(500).json({ message: "Failed to create set" });
-    }
-  });
-
-  // Update a set
-  app.patch("/api/sets/:id", async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
-      return res.status(400).json({ message: "Invalid set ID" });
-    }
-
-    try {
-      const set = await storage.getSet(id);
-      if (!set) {
-        return res.status(404).json({ message: "Set not found" });
-      }
-
-      const updateData = updateSetSchema.parse(req.body);
-      const updatedSet = await storage.updateSet(id, updateData);
-
-      res.json(updatedSet);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid set data", errors: error.errors });
-      }
-      res.status(500).json({ message: "Failed to update set" });
-    }
-  });
+  
 
   // Get all game logs for a match
   app.get("/api/matches/:matchId/logs", async (req: Request, res: Response) => {
