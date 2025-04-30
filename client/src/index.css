@@ -136,6 +136,18 @@
     animation: selected 0.5s infinite;
   }
 
+  /* Mobile layout adjustments */
+  @media (max-width: 768px) {
+    .player-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      align-items: center;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+  }
+
   /* Stat bar */
   .stat-bar {
     height: 10px;
