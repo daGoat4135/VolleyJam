@@ -298,7 +298,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Find winner(s) with highest score
     const winners = playerTotals.filter(player => player.score === maxScore);
 
-    if (winners.length === 1 && todayMatches.length > 0) {
+    if (todayMatches.length === 0) {
+      return res.json({
+        success: false,
+        message: "No eligible matches"
+      });
+    }
+
+    if (winners.length === 1) {
       const [winner] = winners;
       const winnerId = winner.playerId;
       const settings = ratingEngine.getSettings();
@@ -323,9 +330,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
 
+    // If we get here, we either have multiple winners or couldn't find the player
     res.json({ 
       success: false, 
-      message: winners.length > 1 ? "Tied for MVP" : "No eligible matches" 
+      message: "Tied for MVP",
+      tiedPlayers: winners.map(w => w.playerId),
+      points: maxScore
     });
   });
 
