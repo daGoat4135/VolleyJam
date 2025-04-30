@@ -58,16 +58,6 @@ const MatchScreen: React.FC = () => {
 
 
   const handleEndGame = () => {
-    // Validate scores
-    if (westScore === 0 && eastScore === 0) {
-      toast({
-        title: "Invalid Scores",
-        description: "Please enter scores for both teams before ending the game.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     const winningDivision = westScore > eastScore ? 'west' : 'east';
 
     // Update match as complete
