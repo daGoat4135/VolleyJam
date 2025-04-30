@@ -135,12 +135,12 @@ const SelectionScreen: React.FC = () => {
         <Button
           onClick={handleStartMatch}
           disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
-          className="font-arcade w-full md:w-auto px-8 py-3 bg-[#FFD700] text-black rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+          className="font-arcade w-full md:w-auto px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
         >
           {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
         </Button>
         <Button
-            className="font-arcade w-full md:w-auto px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
+            className="font-arcade w-full md:w-auto px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
             onClick={() => navigate('/game-history')}
           >
             GAME HISTORY
