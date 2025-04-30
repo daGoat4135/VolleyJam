@@ -40,6 +40,7 @@ const MatchScreen: React.FC = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [`/api/matches/${matchId}`] });
+      queryClient.invalidateQueries({ queryKey: ['/api/players'] });
       if (data.isComplete) {
         navigate(`/result/${matchId}`);
       }
