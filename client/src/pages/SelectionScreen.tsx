@@ -43,7 +43,8 @@ const SelectionScreen: React.FC = () => {
             >
               {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
             </Button>
-          )
+          ),
+          duration: 5000
         });
       }
     } else {
@@ -72,7 +73,8 @@ const SelectionScreen: React.FC = () => {
             >
               {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
             </Button>
-          )
+          ),
+          duration: 5000
         });
       }
     } else {
