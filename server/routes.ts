@@ -129,8 +129,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
                 volatility: p?.volatility || ratingEngine.getInitialRating().volatility
               })),
-              [westResult, westResult],
-              [scoreDiff, scoreDiff]
+              [westResult, westResult], // 1 for win, 0 for loss
+              [Math.abs(scoreDiff), Math.abs(scoreDiff)] // Using absolute score difference
             );
             await storage.updatePlayer(westPlayer.id, newRating);
           }

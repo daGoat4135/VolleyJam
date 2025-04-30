@@ -52,6 +52,12 @@ class RatingEngine {
     scores: number[], // 1 for win, 0.5 for draw, 0 for loss
     pointDiffs: number[] // Point difference in each match
   ): PlayerRating {
+    console.log('Calculating new rating:', {
+      currentRating: player.rating,
+      opponents: opponents.map(o => o.rating),
+      scores,
+      pointDiffs
+    });
     const μ = player.rating;
     const φ = player.ratingDeviation;
     const σ = player.volatility;
