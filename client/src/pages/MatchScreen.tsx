@@ -74,23 +74,21 @@ const MatchScreen: React.FC = () => {
 
   // Check for win condition
   useEffect(() => {
-    if (westScore > 0 && eastScore > 0) {
-      const scoreDiff = Math.abs(westScore - eastScore);
-      const hasWinner = (westScore >= 21 || eastScore >= 21) && scoreDiff >= 2;
+    const scoreDiff = Math.abs(westScore - eastScore);
+    const hasWinner = (westScore >= 21 || eastScore >= 21) && scoreDiff >= 2;
 
-      if (hasWinner) {
-        toast({
-          title: "Game Point!",
-          description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
-          action: (
-            <ToastAction altText="End Game" onClick={handleEndGame}>
-              END GAME
-            </ToastAction>
-          ),
-        });
-      }
+    if (hasWinner) {
+      toast({
+        title: "Game Point!",
+        description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
+        action: (
+          <ToastAction altText="End Game" onClick={handleEndGame}>
+            END GAME
+          </ToastAction>
+        ),
+      });
     }
-  }, [westScore, eastScore, toast, handleEndGame]);
+  }, [westScore, eastScore]);
 
   // Get team players
   const westPlayer1 = getPlayer(matchData?.westPlayer1Id);
