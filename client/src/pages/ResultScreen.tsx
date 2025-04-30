@@ -108,7 +108,7 @@ const ResultScreen: React.FC = () => {
     <div id="result-screen" className="screen-container active-screen w-full max-w-6xl px-4">
       <div ref={resultCardRef} className="result-card bg-gray-900 border-4 border-[#FFD700] p-6 rounded-lg max-w-2xl mx-auto mb-8">
         <div className="text-center mb-8">
-          <h1 className="font-arcade text-2xl text-[#FFD700] mb-2">VOLLEYBALL JAM</h1>
+          <h1 className="font-arcade text-2xl text-[#FFD700] mb-2">INTUIT BEACH VBALL ASSOC</h1>
           <h2 className="font-arcade text-xl mb-4">MATCH RESULT</h2>
           <div className="result-badge inline-block bg-[#FFD700] text-black font-arcade px-4 py-2 rounded">
             {finalWestScore > finalEastScore ? `${westPlayer1?.name} & ${westPlayer2?.name} WIN!` : `${eastPlayer1?.name} & ${eastPlayer2?.name} WIN!`}
