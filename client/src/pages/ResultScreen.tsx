@@ -65,12 +65,14 @@ const ResultScreen: React.FC = () => {
       
       const file = new File([blob], `volleyball-jam-result-${matchId}.png`, { type: 'image/png' });
 
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: 'Volleyball Jam Result',
-          text: 'Check out my match result!'
-        });
+      const shareData = {
+        files: [file],
+        title: 'Volleyball Jam Result',
+        text: `${finalWestScore > finalEastScore ? 'WEST' : 'EAST'} WINS! Final score: ${finalWestScore}-${finalEastScore}`
+      };
+      
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
         
         playSound('select');
       } else {
