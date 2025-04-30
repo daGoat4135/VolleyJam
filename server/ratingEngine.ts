@@ -60,16 +60,16 @@ class RatingEngine {
     const σ_new = this.calculateNewVolatility(σ, Δ, v, φ);
     const φ_star = Math.sqrt(Math.pow(φ, 2) + Math.pow(σ_new, 2));
     const φ_new = 1 / Math.sqrt(1 / Math.pow(φ_star, 2) + 1 / v);
+    // Apply K-Factor directly to the score difference
+    const kFactorMultiplier = this.settings.kFactor / 32; // Normalize relative to default K=32
     const baseRatingChange = Math.pow(φ_new, 2) * this.g(φ) * 
       opponents.reduce((sum, opp, i) => {
         const marginMultiplier = this.getVictoryMarginMultiplier(pointDiffs[i]);
-        return sum + this.g(opp.ratingDeviation) * 
-          (scores[i] - this.E(μ, opp.rating, opp.ratingDeviation)) * marginMultiplier;
+        const scoreDiff = (scores[i] - this.E(μ, opp.rating, opp.ratingDeviation));
+        return sum + this.g(opp.ratingDeviation) * scoreDiff * marginMultiplier * kFactorMultiplier;
       }, 0);
 
-    // Apply K-Factor scaling
-    const kFactorMultiplier = this.settings.kFactor / 32; // Normalize relative to default K=32
-    const μ_new = μ + (baseRatingChange * kFactorMultiplier);
+    const μ_new = μ + baseRatingChange;
 
     return {
       rating: μ_new,
