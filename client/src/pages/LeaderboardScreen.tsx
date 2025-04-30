@@ -38,7 +38,7 @@ const LeaderboardScreen: React.FC = () => {
         matches: 0,
         winRate: 0,
         mvps: 0,
-        glickoScore: 1500
+        glickoScore: player.rating || 1500
       };
     });
 
