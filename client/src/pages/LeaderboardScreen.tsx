@@ -105,10 +105,10 @@ const LeaderboardScreen: React.FC = () => {
         <p className="font-digital text-sm text-gray-400">Player Rankings and Stats</p>
       </div>
 
-      <div className="leaderboard bg-gradient-to-b from-gray-900 to-black border-2 border-[#FFD700] p-4 mb-8">
-        <div className="grid grid-cols-1 gap-4">
-          {playerStats.length > 0 ? (
-            playerStats.map((stat, index) => (
+      <div className="space-y-8">
+        <div className="leaderboard bg-gradient-to-b from-gray-900 to-black border-2 border-[#FFD700] p-4">
+          <div className="grid grid-cols-1 gap-4">
+            {playerStats.filter(stat => stat.hasPlayed).map((stat, index) => (
               <div 
                 key={stat.player.id}
                 className="player-stat flex items-center bg-black p-3 border border-gray-800"
@@ -142,13 +142,35 @@ const LeaderboardScreen: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="text-center font-arcade text-sm py-8 text-gray-500">
-              NO MATCH DATA AVAILABLE
-            </div>
-          )}
+            ))}
+          </div>
         </div>
+        
+        {playerStats.some(stat => !stat.hasPlayed) && (
+          <div className="unplayed bg-gradient-to-b from-gray-900 to-black p-4 border border-gray-800">
+            <h3 className="font-arcade text-gray-400 mb-4 text-sm">UNRANKED PLAYERS</h3>
+            <div className="grid grid-cols-1 gap-4">
+              {playerStats.filter(stat => !stat.hasPlayed).map((stat) => (
+                <div 
+                  key={stat.player.id}
+                  className="player-stat flex items-center bg-black p-3 border border-gray-800"
+                >
+                  <div className="player-image mr-4">
+                    <PixelBorder>
+                      <img src={stat.player.avatarUrl} alt={stat.player.name} className="w-12 h-12 object-cover" />
+                    </PixelBorder>
+                  </div>
+                  <div className="player-info flex-grow">
+                    <div className="font-arcade text-sm mb-1 text-white">
+                      {stat.player.name}
+                    </div>
+                    <div className="text-gray-400 text-sm font-arcade">No matches played</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="action-buttons flex justify-center space-x-4">
