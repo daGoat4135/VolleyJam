@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,6 +18,7 @@ interface RatingSettings {
 }
 
 export default function AdminScreen() {
+  const [, navigate] = useLocation();
   const { toast } = useToast();
   const [settings, setSettings] = useState<RatingSettings>({
     dailyBonusAmount: 15,
