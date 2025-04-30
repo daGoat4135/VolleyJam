@@ -129,7 +129,7 @@ const MatchScreen: React.FC = () => {
                 placeholder="0"
                 value={westScore || ''}
                 onChange={(e) => setWestScore(parseInt(e.target.value) || 0)}
-                className="font-digital text-8xl text-center text-[#FF4D4D] w-48 mx-auto"
+                className="font-digital text-8xl text-center text-[#FF4D4D] w-48 h-48 mx-auto"
               />
             </div>
           </div>
@@ -191,7 +191,7 @@ const MatchScreen: React.FC = () => {
                 placeholder="0"
                 value={eastScore || ''}
                 onChange={(e) => setEastScore(parseInt(e.target.value) || 0)}
-                className="font-digital text-8xl text-center text-[#4169E1] w-48 mx-auto"
+                className="font-digital text-8xl text-center text-[#4169E1] w-48 h-48 mx-auto"
               />
             </div>
           </div>
