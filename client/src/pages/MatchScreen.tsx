@@ -76,8 +76,9 @@ const MatchScreen: React.FC = () => {
   useEffect(() => {
     const scoreDiff = Math.abs(westScore - eastScore);
     const hasWinner = (westScore >= 21 || eastScore >= 21) && scoreDiff >= 2;
+    const bothScoresEntered = westScore > 0 && eastScore > 0;
 
-    if (hasWinner) {
+    if (hasWinner && bothScoresEntered) {
       toast({
         title: "Game Point!",
         description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
