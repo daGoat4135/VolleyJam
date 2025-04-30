@@ -28,6 +28,8 @@ export const players = pgTable("players", {
   rating: integer("rating"),
   ratingDeviation: integer("rating_deviation"),
   volatility: integer("volatility"),
+  dailyPoints: integer("daily_points").default(0),
+  lastPointsReset: timestamp("last_points_reset"),
 });
 
 export const insertPlayerSchema = createInsertSchema(players).pick({

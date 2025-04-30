@@ -12,16 +12,16 @@ import { useToast } from '@/hooks/use-toast';
 const SelectionScreen: React.FC = () => {
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  
+
   // Player selection state
   const [selectedWestPlayers, setSelectedWestPlayers] = useState<Player[]>([]);
   const [selectedEastPlayers, setSelectedEastPlayers] = useState<Player[]>([]);
-  
+
   // Fetch all players data
   const { data: allPlayers = [], isLoading: isLoadingPlayers } = useQuery<Player[]>({
     queryKey: ['/api/players'],
   });
-  
+
   // Handle player selection
   const handleWestPlayerSelect = (player: Player) => {
     if (selectedWestPlayers.some(p => p.id === player.id)) {
@@ -34,7 +34,7 @@ const SelectionScreen: React.FC = () => {
       playSound('select');
     }
   };
-  
+
   const handleEastPlayerSelect = (player: Player) => {
     if (selectedEastPlayers.some(p => p.id === player.id)) {
       setSelectedEastPlayers(selectedEastPlayers.filter(p => p.id !== player.id));
@@ -46,7 +46,7 @@ const SelectionScreen: React.FC = () => {
       playSound('select');
     }
   };
-  
+
   // Create match mutation
   const createMatchMutation = useMutation({
     mutationFn: async (matchData: InsertMatch) => {
@@ -68,7 +68,7 @@ const SelectionScreen: React.FC = () => {
       });
     }
   });
-  
+
   // Start match handler
   const handleStartMatch = () => {
     if (selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2) {
@@ -80,7 +80,7 @@ const SelectionScreen: React.FC = () => {
       });
       return;
     }
-    
+
     // Create new match
     const matchData: InsertMatch = {
       westPlayer1Id: selectedWestPlayers[0].id,
@@ -88,10 +88,10 @@ const SelectionScreen: React.FC = () => {
       eastPlayer1Id: selectedEastPlayers[0].id,
       eastPlayer2Id: selectedEastPlayers[1].id,
     };
-    
+
     createMatchMutation.mutate(matchData);
   };
-  
+
   return (
     <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4">
       <div className="mt-8 mb-6 text-center">
@@ -104,7 +104,7 @@ const SelectionScreen: React.FC = () => {
         <h2 className="font-arcade text-lg md:text-2xl mb-1">SELECT YOUR PLAYERS</h2>
         <p className="font-digital text-sm text-gray-400">Choose 2 players from each side</p>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Team 1 */}
         <TeamSection
@@ -114,7 +114,7 @@ const SelectionScreen: React.FC = () => {
           onPlayerSelect={handleWestPlayerSelect}
         />
       </div>
-      
+
       {/* VS Section */}
       <div className="vs-section flex justify-center my-4">
         <div className="vs-flash font-arcade text-4xl md:text-6xl text-[#FFD700]">VS</div>
@@ -129,7 +129,7 @@ const SelectionScreen: React.FC = () => {
           onPlayerSelect={handleEastPlayerSelect}
         />
       </div>
-      
+
       {/* Continue Button */}
       <div className="flex justify-center">
         <Button
@@ -139,6 +139,34 @@ const SelectionScreen: React.FC = () => {
         >
           {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
         </Button>
+        <Button
+            className="font-arcade px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
+            onClick={() => navigate('/game-history')}
+          >
+            GAME HISTORY
+          </Button>
+          <Button
+            className="font-arcade px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
+            onClick={async () => {
+              const response = await fetch('/api/daily-mvp', { method: 'POST' });
+              const result = await response.json();
+
+              if (result.success) {
+                toast({
+                  title: "MVP Awarded! 🏆",
+                  description: `${result.mvp.name} scored ${result.points} points today! (+${result.ratingBonus} rating)`
+                });
+              } else {
+                toast({
+                  title: "Cannot Award MVP",
+                  description: result.message,
+                  variant: "destructive"
+                });
+              }
+            }}
+          >
+            AWARD DAILY MVP
+          </Button>
       </div>
     </div>
   );

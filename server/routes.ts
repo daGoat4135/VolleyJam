@@ -286,6 +286,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Calculate and award daily MVP
+  app.post("/api/daily-mvp", async (_req: Request, res: Response) => {
+    // Get today's matches
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const matches = await storage.getMatches();
+    const todayMatches = matches.filter(m => {
+      const matchDate = new Date(m.createdAt);
+      matchDate.setHours(0, 0, 0, 0);
+      return matchDate.getTime() === today.getTime() && m.isComplete;
+    });
+
+    // Calculate points per player
+    const playerPoints: Record<number, number> = {};
+    todayMatches.forEach(match => {
+      const westPoints = match.westScore || 0;
+      const eastPoints = match.eastScore || 0;
+      
+      [match.westPlayer1Id, match.westPlayer2Id].forEach(id => {
+        playerPoints[id] = (playerPoints[id] || 0) + westPoints;
+      });
+      
+      [match.eastPlayer1Id, match.eastPlayer2Id].forEach(id => {
+        playerPoints[id] = (playerPoints[id] || 0) + eastPoints;
+      });
+    });
+
+    // Find highest score
+    const scores = Object.values(playerPoints);
+    const maxScore = Math.max(...scores);
+    
+    // Check for ties
+    const winners = Object.entries(playerPoints).filter(([_, score]) => score === maxScore);
+    
+    if (winners.length === 1 && todayMatches.length > 0) {
+      const [winnerId] = winners[0];
+      const settings = ratingEngine.getSettings();
+      const player = await storage.getPlayer(parseInt(winnerId));
+      
+      if (player) {
+        const newRating = (player.rating || settings.initialRating) + settings.dailyBonusAmount;
+        await storage.updatePlayer(player.id, {
+          rating: newRating,
+          lastPointsReset: new Date()
+        });
+        
+        return res.json({ 
+          success: true, 
+          mvp: player,
+          points: maxScore,
+          ratingBonus: settings.dailyBonusAmount 
+        });
+      }
+    }
+    
+    res.json({ 
+      success: false, 
+      message: winners.length > 1 ? "Tied for MVP" : "No eligible matches" 
+    });
+  });
+
   // Export ratings as CSV
   app.get("/api/export-ratings", async (_req: Request, res: Response) => {
     const players = await storage.getPlayers();
