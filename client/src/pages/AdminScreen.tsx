@@ -89,6 +89,12 @@ export default function AdminScreen() {
           >
             VIEW LEADERBOARD
           </Button>
+          <Button
+            className="font-arcade px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
+            onClick={() => navigate('/game-history')}
+          >
+            GAME HISTORY
+          </Button>
         </div>
       </div>
 

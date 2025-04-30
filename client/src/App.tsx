@@ -10,7 +10,8 @@ import MatchScreen from "@/pages/MatchScreen";
 import ResultScreen from "@/pages/ResultScreen";
 import LeaderboardScreen from "@/pages/LeaderboardScreen";
 import TitleBar from "@/components/TitleBar";
-import AdminScreen from "@/pages/AdminScreen"; // Added import for AdminScreen
+import AdminScreen from "@/pages/AdminScreen";
+import GameHistoryScreen from "@/pages/GameHistoryScreen";
 
 // Sound import
 import { initSounds } from "@/assets/arcadeSounds";
@@ -24,7 +25,8 @@ function Router() {
         <Route path="/match/:id" component={MatchScreen} />
         <Route path="/result/:id" component={ResultScreen} />
         <Route path="/leaderboard" component={LeaderboardScreen} />
-        <Route path="/admin" component={AdminScreen} /> {/* Added admin route */}
+        <Route path="/admin" component={AdminScreen} />
+        <Route path="/game-history" component={GameHistoryScreen} />
         <Route component={NotFound} />
       </Switch>
     </div>
