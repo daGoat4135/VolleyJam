@@ -71,10 +71,18 @@ const LeaderboardScreen: React.FC = () => {
 
     const statsArray = Object.values(stats).map(stat => ({
       ...stat,
-      winRate: stat.matches > 0 ? (stat.wins / stat.matches) * 100 : 0
+      winRate: stat.matches > 0 ? (stat.wins / stat.matches) * 100 : 0,
+      hasPlayed: stat.matches > 0
     }));
 
-    return statsArray.sort((a, b) => b.winRate - a.winRate);
+    return statsArray.sort((a, b) => {
+      // First sort by whether they've played games
+      if (a.hasPlayed !== b.hasPlayed) {
+        return a.hasPlayed ? -1 : 1;
+      }
+      // Then sort by rating
+      return (b.player.rating || 1500) - (a.player.rating || 1500);
+    });
   }, [players, matches]);
 
   if (isLoadingPlayers || isLoadingMatches) {
