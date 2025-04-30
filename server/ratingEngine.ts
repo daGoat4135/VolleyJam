@@ -1,3 +1,4 @@
+
 interface RatingSettings {
   dailyBonusAmount: number;
   kFactor: number;
@@ -5,7 +6,7 @@ interface RatingSettings {
   victoryMarginWeight: string;
 }
 
-export class RatingEngine {
+class RatingEngine {
   private readonly TAU = 0.5;
   private readonly EPSILON = 0.000001;
 
@@ -33,3 +34,5 @@ export class RatingEngine {
     }
   }
 }
+
+export const ratingEngine = new RatingEngine();
