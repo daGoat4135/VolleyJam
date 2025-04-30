@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PixelBorder } from '@/components/ui/pixel-border';
 import { useToast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 const MatchScreen: React.FC = () => {
   const [, navigate] = useLocation();
@@ -79,7 +80,12 @@ const MatchScreen: React.FC = () => {
     if (hasWinner) {
       toast({
         title: "Game Point!",
-        description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins! Click 'END GAME' to continue.`,
+        description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
+        action: (
+          <ToastAction altText="End Game" onClick={handleEndGame}>
+            END GAME
+          </ToastAction>
+        ),
       });
     }
   }, [westScore, eastScore]);
