@@ -36,7 +36,11 @@ const SelectionScreen: React.FC = () => {
           title: "All Players Selected!",
           description: "Ready to start the match",
           action: (
-            <ToastAction altText="Start Match" onClick={handleStartMatch}>
+            <ToastAction altText="Start Match" onClick={() => {
+              if (selectedWestPlayers.length === 2 && selectedEastPlayers.length === 2) {
+                handleStartMatch();
+              }
+            }}>
               START MATCH
             </ToastAction>
           )
@@ -61,7 +65,11 @@ const SelectionScreen: React.FC = () => {
           title: "All Players Selected!",
           description: "Ready to start the match",
           action: (
-            <ToastAction altText="Start Match" onClick={handleStartMatch}>
+            <ToastAction altText="Start Match" onClick={() => {
+              if (selectedWestPlayers.length === 2 && selectedEastPlayers.length === 2) {
+                handleStartMatch();
+              }
+            }}>
               START MATCH
             </ToastAction>
           )
