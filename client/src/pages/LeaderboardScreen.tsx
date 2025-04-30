@@ -151,6 +151,12 @@ const LeaderboardScreen: React.FC = () => {
         >
           BACK TO SELECTION
         </Button>
+        <Button
+          className="font-arcade px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
+          onClick={() => navigate('/admin')}
+        >
+          ADMIN
+        </Button>
       </div>
     </div>
   );
