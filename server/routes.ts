@@ -260,16 +260,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (match.eastPlayer2Id) playerPoints[match.eastPlayer2Id] = (playerPoints[match.eastPlayer2Id] || 0) + eastScore;
     }
 
-    // Find highest score
+    // Find highest score and show point totals
     const scores = Object.values(playerPoints);
     const maxScore = Math.max(...scores);
     
-    // Find all players with the max score
-    const winners = Object.entries(playerPoints)
-      .filter(([_, score]) => score === maxScore);
+    // Find all players with points and log their totals
+    const playerTotals = Object.entries(playerPoints)
+      .map(([playerId, score]) => ({
+        playerId: parseInt(playerId),
+        score
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    // Log point totals for debugging
+    console.log('Player point totals:', playerTotals);
+    
+    // Find winner(s) with highest score
+    const winners = playerTotals.filter(player => player.score === maxScore);
 
     if (winners.length === 1 && todayMatches.length > 0) {
-      const [winnerId] = winners[0];
+      const [winner] = winners;
+      const winnerId = winner.playerId;
       const settings = ratingEngine.getSettings();
       const player = await storage.getPlayer(parseInt(winnerId));
 
