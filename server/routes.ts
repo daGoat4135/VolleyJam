@@ -166,7 +166,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  
+
 
   // Get all game logs for a match
   app.get("/api/matches/:matchId/logs", async (req: Request, res: Response) => {
@@ -235,7 +235,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "MVP has already been awarded today"
       });
     }
-    
+
     const matches = await storage.getMatches();
     const todayMatches = matches.filter(m => {
       const matchDate = new Date(m.createdAt);
@@ -245,13 +245,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     // Calculate points per player
     const playerPoints: Record<number, number> = {};
-    
+
     // For each match, add the team's score to each player on that team
     for (const match of todayMatches) {
       const sets = await storage.getSets(match.id);
       const westScore = sets.reduce((sum, set) => sum + (set.westScore || 0), 0);
       const eastScore = sets.reduce((sum, set) => sum + (set.eastScore || 0), 0);
-      
+
       if (match.westPlayer1Id) playerPoints[match.westPlayer1Id] = (playerPoints[match.westPlayer1Id] || 0) + westScore;
       if (match.westPlayer2Id) playerPoints[match.westPlayer2Id] = (playerPoints[match.westPlayer2Id] || 0) + westScore;
       if (match.eastPlayer1Id) playerPoints[match.eastPlayer1Id] = (playerPoints[match.eastPlayer1Id] || 0) + eastScore;
@@ -261,26 +261,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Find highest score
     const scores = Object.values(playerPoints);
     const maxScore = Math.max(...scores);
-    
+
     // Find all players with the max score and check for ties
     const winners = Object.entries(playerPoints)
       .filter(([_, score]) => score === maxScore);
-    
+
     if (winners.length === 1 && todayMatches.length > 0) {
       const [winnerId] = winners[0];
       const settings = ratingEngine.getSettings();
       const player = await storage.getPlayer(parseInt(winnerId));
-      
+
       if (player) {
         const newRating = (player.rating || settings.initialRating) + settings.dailyBonusAmount;
         await storage.updatePlayer(player.id, {
           rating: newRating,
           lastPointsReset: new Date()
         });
-        
+
         // Track the award date
         lastMvpAwardDate = today;
-        
+
         return res.json({ 
           success: true, 
           mvp: player,
@@ -289,7 +289,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
     }
-    
+
     res.json({ 
       success: false, 
       message: winners.length > 1 ? "Tied for MVP" : "No eligible matches" 
@@ -301,7 +301,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const players = await storage.getPlayers();
     const csv = players.map(p => `${p.name},${p.rating},${p.ratingDeviation},${p.volatility}`).join('\n');
     const headers = 'Name,Rating,RD,Volatility\n';
-    
+
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=ratings.csv');
     res.send(headers + csv);
