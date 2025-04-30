@@ -25,6 +25,9 @@ export const players = pgTable("players", {
   speed: integer("speed").notNull(),
   power: integer("power").notNull(),
   avatarUrl: text("avatar_url").notNull(),
+  rating: integer("rating"),
+  ratingDeviation: integer("rating_deviation"),
+  volatility: integer("volatility"),
 });
 
 export const insertPlayerSchema = createInsertSchema(players).pick({

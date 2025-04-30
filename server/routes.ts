@@ -105,6 +105,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updateData = updateSchema.parse(req.body);
       const updatedMatch = await storage.updateMatch(id, updateData);
 
+      // If match is complete, update player ratings
+      if (updateData.isComplete && updateData.winningDivision) {
+        const westPlayers = await Promise.all([
+          storage.getPlayer(match.westPlayer1Id),
+          storage.getPlayer(match.westPlayer2Id)
+        ]);
+        const eastPlayers = await Promise.all([
+          storage.getPlayer(match.eastPlayer1Id),
+          storage.getPlayer(match.eastPlayer2Id)
+        ]);
+
+        // Calculate scores and point differences
+        const sets = await storage.getSets(match.id);
+        const totalWestScore = sets.reduce((sum, set) => sum + set.westScore, 0);
+        const totalEastScore = sets.reduce((sum, set) => sum + set.eastScore, 0);
+        const scoreDiff = Math.abs(totalWestScore - totalEastScore);
+
+        // Update ratings for all players
+        const isWestWinner = updateData.winningDivision === 'west';
+        const westResult = isWestWinner ? 1 : 0;
+        const eastResult = isWestWinner ? 0 : 1;
+
+        for (const westPlayer of westPlayers) {
+          if (westPlayer) {
+            const newRating = ratingEngine.calculateNewRating(
+              {
+                rating: westPlayer.rating || ratingEngine.getInitialRating().rating,
+                ratingDeviation: westPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                volatility: westPlayer.volatility || ratingEngine.getInitialRating().volatility
+              },
+              eastPlayers.map(p => ({
+                rating: p?.rating || ratingEngine.getInitialRating().rating,
+                ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                volatility: p?.volatility || ratingEngine.getInitialRating().volatility
+              })),
+              [westResult, westResult],
+              [scoreDiff, scoreDiff]
+            );
+            await storage.updatePlayer(westPlayer.id, newRating);
+          }
+        }
+
+        for (const eastPlayer of eastPlayers) {
+          if (eastPlayer) {
+            const newRating = ratingEngine.calculateNewRating(
+              {
+                rating: eastPlayer.rating || ratingEngine.getInitialRating().rating,
+                ratingDeviation: eastPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                volatility: eastPlayer.volatility || ratingEngine.getInitialRating().volatility
+              },
+              westPlayers.map(p => ({
+                rating: p?.rating || ratingEngine.getInitialRating().rating,
+                ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                volatility: p?.volatility || ratingEngine.getInitialRating().volatility
+              })),
+              [eastResult, eastResult],
+              [scoreDiff, scoreDiff]
+            );
+            await storage.updatePlayer(eastPlayer.id, newRating);
+          }
+        }
+      }
+
       res.json(updatedMatch);
     } catch (error) {
       if (error instanceof z.ZodError) {

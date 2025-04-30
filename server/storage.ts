@@ -100,9 +100,31 @@ export class MemStorage implements IStorage {
   
   async createPlayer(insertPlayer: InsertPlayer): Promise<Player> {
     const id = this.playerCurrentId++;
-    const player: Player = { ...insertPlayer, id };
+    const player: Player = { 
+      ...insertPlayer, 
+      id,
+      rating: ratingEngine.getInitialRating().rating,
+      ratingDeviation: ratingEngine.getInitialRating().ratingDeviation,
+      volatility: ratingEngine.getInitialRating().volatility
+    };
     this.players.set(id, player);
     return player;
+  }
+
+  async updatePlayer(id: number, ratingData: { rating: number; ratingDeviation: number; volatility: number }): Promise<Player> {
+    const player = this.players.get(id);
+    if (!player) {
+      throw new Error(`Player with id ${id} not found`);
+    }
+    
+    const updatedPlayer = { 
+      ...player, 
+      rating: ratingData.rating,
+      ratingDeviation: ratingData.ratingDeviation,
+      volatility: ratingData.volatility
+    };
+    this.players.set(id, updatedPlayer);
+    return updatedPlayer;
   }
   
   // Matches
