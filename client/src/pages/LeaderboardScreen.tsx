@@ -117,20 +117,22 @@ const LeaderboardScreen: React.FC = () => {
                   <div className={`font-arcade text-sm mb-1 ${index < 3 ? 'text-[#FFD700]' : 'text-white'}`}>
                     {stat.player.name}
                   </div>
-                  <div className="grid grid-cols-3 gap-1 text-sm font-arcade">
+                  <div className="grid gap-1 text-sm font-arcade">
                     <div>
                       <span className="text-gray-400">RATING:</span>
                       <span className={index < 3 ? 'text-[#FFD700] ml-1' : 'text-white ml-1'}>{Math.round(stat.glickoScore)}</span>
                     </div>
-                    <div className={`text-center ${index < 3 ? 'text-[#FFD700]' : 'text-white'}`}>
-                      <span>{stat.wins}-{stat.matches - stat.wins}</span>
-                    </div>
-                    <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
-                      <span>{(stat.winRate / 100).toFixed(3)}</span>
-                    </div>
-                    <div>
-                      <span className="text-gray-400">MVP:</span> 
-                      <span className="text-[#FFD700] ml-1">{stat.mvps}</span>
+                    <div className="grid grid-cols-3 gap-1">
+                      <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
+                        <span>{stat.wins}-{stat.matches - stat.wins}</span>
+                      </div>
+                      <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
+                        <span>{(stat.winRate / 100).toFixed(3)}</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-400">MVP:</span> 
+                        <span className="text-[#FFD700] ml-1">{stat.mvps}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
