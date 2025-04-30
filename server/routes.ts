@@ -248,16 +248,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Calculate points per player
     const playerPoints: Record<number, number> = {};
 
-    // For each match, add the team's score to each player on that team
+    // For each match, add the points to each player
     for (const match of todayMatches) {
       const sets = await storage.getSets(match.id);
+      
+      // Get total points scored
       const westScore = sets.reduce((sum, set) => sum + (set.westScore || 0), 0);
       const eastScore = sets.reduce((sum, set) => sum + (set.eastScore || 0), 0);
 
-      if (match.westPlayer1Id) playerPoints[match.westPlayer1Id] = (playerPoints[match.westPlayer1Id] || 0) + westScore;
-      if (match.westPlayer2Id) playerPoints[match.westPlayer2Id] = (playerPoints[match.westPlayer2Id] || 0) + westScore;
-      if (match.eastPlayer1Id) playerPoints[match.eastPlayer1Id] = (playerPoints[match.eastPlayer1Id] || 0) + eastScore;
-      if (match.eastPlayer2Id) playerPoints[match.eastPlayer2Id] = (playerPoints[match.eastPlayer2Id] || 0) + eastScore;
+      // Add west team points
+      if (match.westPlayer1Id) {
+        playerPoints[match.westPlayer1Id] = (playerPoints[match.westPlayer1Id] || 0) + Math.floor(westScore);
+      }
+      if (match.westPlayer2Id) {
+        playerPoints[match.westPlayer2Id] = (playerPoints[match.westPlayer2Id] || 0) + Math.floor(westScore);
+      }
+
+      // Add east team points  
+      if (match.eastPlayer1Id) {
+        playerPoints[match.eastPlayer1Id] = (playerPoints[match.eastPlayer1Id] || 0) + Math.floor(eastScore);
+      }
+      if (match.eastPlayer2Id) {
+        playerPoints[match.eastPlayer2Id] = (playerPoints[match.eastPlayer2Id] || 0) + Math.floor(eastScore);
+      }
+
+      console.log('Match points:', {
+        matchId: match.id,
+        westScore,
+        eastScore,
+        players: playerPoints
+      });
     }
 
     // Find highest score and show point totals
