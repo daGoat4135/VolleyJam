@@ -55,6 +55,15 @@ const MatchScreen: React.FC = () => {
     return players.find(p => p.id === id);
   };
 
+  const calculateWinProbability = (team1Ratings: number[], team2Ratings: number[]): number => {
+    // Average team ratings
+    const team1Avg = team1Ratings.reduce((a, b) => a + b, 0) / team1Ratings.length;
+    const team2Avg = team2Ratings.reduce((a, b) => a + b, 0) / team2Ratings.length;
+    
+    // Use logistic function to calculate win probability
+    return 1 / (1 + Math.exp(-(team1Avg - team2Avg) / 400));
+  };
+
 
 
   const handleEndGame = () => {
@@ -111,6 +120,14 @@ const MatchScreen: React.FC = () => {
         {/* West Team */}
         <div className="team-panel bg-gradient-to-b from-gray-900 to-black border-2 border-[#FF4D4D] p-4">
           <h3 className="font-arcade text-center mb-4 text-[#FF4D4D]">WEST TEAM</h3>
+          {westPlayer1 && westPlayer2 && eastPlayer1 && eastPlayer2 && (
+            <div className="text-center font-digital text-sm text-[#FF4D4D] mb-4">
+              Win Chance: {Math.round(calculateWinProbability(
+                [westPlayer1.rating || 1500, westPlayer2.rating || 1500],
+                [eastPlayer1.rating || 1500, eastPlayer2.rating || 1500]
+              ) * 100)}%
+            </div>
+          )}
 
           <div className="team-players grid grid-cols-2 gap-2 mb-4">
             {westPlayer1 && (
@@ -173,6 +190,14 @@ const MatchScreen: React.FC = () => {
         {/* East Team */}
         <div className="team-panel bg-gradient-to-b from-gray-900 to-black border-2 border-[#4169E1] p-4">
           <h3 className="font-arcade text-center mb-4 text-[#4169E1]">EAST TEAM</h3>
+          {westPlayer1 && westPlayer2 && eastPlayer1 && eastPlayer2 && (
+            <div className="text-center font-digital text-sm text-[#4169E1] mb-4">
+              Win Chance: {Math.round(calculateWinProbability(
+                [eastPlayer1.rating || 1500, eastPlayer2.rating || 1500],  
+                [westPlayer1.rating || 1500, westPlayer2.rating || 1500]
+              ) * 100)}%
+            </div>
+          )}
 
           <div className="team-players grid grid-cols-2 gap-2 mb-4">
             {eastPlayer1 && (
