@@ -252,31 +252,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     for (const match of todayMatches) {
       const sets = await storage.getSets(match.id);
       
-      // Get total points scored
+      // Get total points scored in this match
       const westScore = sets.reduce((sum, set) => sum + (set.westScore || 0), 0);
       const eastScore = sets.reduce((sum, set) => sum + (set.eastScore || 0), 0);
 
-      // Add west team points
+      // Initialize points for players if not already set
+      if (match.westPlayer1Id && !playerPoints[match.westPlayer1Id]) playerPoints[match.westPlayer1Id] = 0;
+      if (match.westPlayer2Id && !playerPoints[match.westPlayer2Id]) playerPoints[match.westPlayer2Id] = 0;
+      if (match.eastPlayer1Id && !playerPoints[match.eastPlayer1Id]) playerPoints[match.eastPlayer1Id] = 0;
+      if (match.eastPlayer2Id && !playerPoints[match.eastPlayer2Id]) playerPoints[match.eastPlayer2Id] = 0;
+
+      // Add west team points cumulatively
       if (match.westPlayer1Id) {
-        playerPoints[match.westPlayer1Id] = (playerPoints[match.westPlayer1Id] || 0) + Math.floor(westScore);
+        playerPoints[match.westPlayer1Id] += Math.floor(westScore);
       }
       if (match.westPlayer2Id) {
-        playerPoints[match.westPlayer2Id] = (playerPoints[match.westPlayer2Id] || 0) + Math.floor(westScore);
+        playerPoints[match.westPlayer2Id] += Math.floor(westScore);
       }
 
-      // Add east team points  
+      // Add east team points cumulatively
       if (match.eastPlayer1Id) {
-        playerPoints[match.eastPlayer1Id] = (playerPoints[match.eastPlayer1Id] || 0) + Math.floor(eastScore);
+        playerPoints[match.eastPlayer1Id] += Math.floor(eastScore);
       }
       if (match.eastPlayer2Id) {
-        playerPoints[match.eastPlayer2Id] = (playerPoints[match.eastPlayer2Id] || 0) + Math.floor(eastScore);
+        playerPoints[match.eastPlayer2Id] += Math.floor(eastScore);
       }
 
       console.log('Match points:', {
         matchId: match.id,
         westScore,
         eastScore,
-        players: playerPoints
+        players: {...playerPoints} // Spread to get a clean log
       });
     }
 
