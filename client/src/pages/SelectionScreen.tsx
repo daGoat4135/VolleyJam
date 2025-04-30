@@ -35,11 +35,17 @@ const SelectionScreen: React.FC = () => {
         toast({
           title: "All Players Selected!",
           description: "Ready to start the match",
-          action: <ToastAction altText="Start Match" onClick={() => {
-            if (newSelected.length === 2 && selectedWestPlayers.length === 2) {
-              handleStartMatch();
-            }
-          }}>START MATCH</ToastAction>
+          action: (
+            <ToastAction altText="Start Match">
+              <Button
+                onClick={handleStartMatch}
+                disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
+                className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+              >
+                {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
+              </Button>
+            </ToastAction>
+          )
         });
       }
     } else {
@@ -60,11 +66,17 @@ const SelectionScreen: React.FC = () => {
         toast({
           title: "All Players Selected!",
           description: "Ready to start the match",
-          action: <ToastAction altText="Start Match" onClick={() => {
-            if (newSelected.length === 2 && selectedWestPlayers.length === 2) {
-              handleStartMatch();
-            }
-          }}>START MATCH</ToastAction>
+          action: (
+            <ToastAction altText="Start Match">
+              <Button
+                onClick={handleStartMatch}
+                disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
+                className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+              >
+                {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
+              </Button>
+            </ToastAction>
+          )
         });
       }
     } else {
