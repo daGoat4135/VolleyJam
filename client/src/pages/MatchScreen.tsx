@@ -134,8 +134,6 @@ const MatchScreen: React.FC = () => {
             <div className="text-center mb-2">
               <Input
                 type="number"
-                inputMode="numeric"
-                enterKeyHint="next"
                 min="0"
                 placeholder="0"
                 value={westScore || ''}
@@ -198,8 +196,6 @@ const MatchScreen: React.FC = () => {
             <div className="text-center mb-2">
               <Input
                 type="number"
-                inputMode="numeric"
-                enterKeyHint="next"
                 min="0"
                 placeholder="0"
                 value={eastScore || ''}
