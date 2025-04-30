@@ -11,7 +11,7 @@ export const PixelBorder: React.FC<PixelBorderProps> = ({
 }) => {
   return (
     <div className="pixel-border" style={{
-      boxShadow: `0 0 0 2px #000, 0 0 0 4px ${color}`
+      boxShadow: `inset 0 0 0 2px #000, inset 0 0 0 4px ${color}` // Changed to inset box-shadow
     }}>
       {children}
     </div>
