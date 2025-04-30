@@ -36,12 +36,14 @@ const SelectionScreen: React.FC = () => {
           title: "All Players Selected!",
           description: "Ready to start the match",
           action: (
-            <ToastAction altText="Start Match" onClick={() => {
-              if (selectedWestPlayers.length === 2 && selectedEastPlayers.length === 2) {
-                handleStartMatch();
-              }
-            }}>
-              START MATCH
+            <ToastAction altText="Start Match">
+              <Button
+                onClick={handleStartMatch}
+                disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
+                className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+              >
+                {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
+              </Button>
             </ToastAction>
           )
         });
@@ -65,12 +67,14 @@ const SelectionScreen: React.FC = () => {
           title: "All Players Selected!",
           description: "Ready to start the match",
           action: (
-            <ToastAction altText="Start Match" onClick={() => {
-              if (selectedWestPlayers.length === 2 && selectedEastPlayers.length === 2) {
-                handleStartMatch();
-              }
-            }}>
-              START MATCH
+            <ToastAction altText="Start Match">
+              <Button
+                onClick={handleStartMatch}
+                disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
+                className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+              >
+                {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
+              </Button>
             </ToastAction>
           )
         });
