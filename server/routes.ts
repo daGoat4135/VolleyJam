@@ -318,12 +318,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const scores = Object.values(playerPoints);
     const maxScore = Math.max(...scores);
     
-    // Find all players with the max score
+    // Find all players with the max score and check for ties
     const winners = Object.entries(playerPoints)
       .filter(([_, score]) => score === maxScore);
-    
-    // Check for ties
-    const winners = Object.entries(playerPoints).filter(([_, score]) => score === maxScore);
     
     if (winners.length === 1 && todayMatches.length > 0) {
       const [winnerId] = winners[0];
