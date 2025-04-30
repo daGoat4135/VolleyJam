@@ -20,9 +20,9 @@ export default function AdminScreen() {
   const { toast } = useToast();
   const [settings, setSettings] = useState<RatingSettings>({
     dailyBonusAmount: 15,
-    kFactor: 32,
+    kFactor: 200,
     initialRating: 1500,
-    victoryMarginWeight: 'normal'
+    victoryMarginWeight: 'high'
   });
 
   const { data: currentSettings } = useQuery<RatingSettings>({
