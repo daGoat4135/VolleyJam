@@ -131,22 +131,22 @@ const SelectionScreen: React.FC = () => {
       </div>
 
       {/* Continue Button */}
-      <div className="flex justify-center">
+      <div className="flex flex-col md:flex-row justify-center items-center gap-4 px-4">
         <Button
           onClick={handleStartMatch}
           disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
-          className="font-arcade px-8 py-3 bg-[#FFD700] text-black rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+          className="font-arcade w-full md:w-auto px-8 py-3 bg-[#FFD700] text-black rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
         >
           {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
         </Button>
         <Button
-            className="font-arcade px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
+            className="font-arcade w-full md:w-auto px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
             onClick={() => navigate('/game-history')}
           >
             GAME HISTORY
           </Button>
           <Button
-            className="font-arcade px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
+            className="font-arcade w-full md:w-auto px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
             onClick={async () => {
               const response = await fetch('/api/daily-mvp', { method: 'POST' });
               const result = await response.json();
