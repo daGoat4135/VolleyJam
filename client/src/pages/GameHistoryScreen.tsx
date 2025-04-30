@@ -30,7 +30,7 @@ export default function GameHistoryScreen() {
   });
 
   // Helper function to get player name by ID
-  const getPlayerNameById = (playerId?: number): string => {
+  const getPlayerNameById = (playerId: number | undefined | null): string => {
     if (!playerId) return 'Unknown';
     const player = players.find(p => p.id === playerId);
     return player ? player.name : 'Unknown';
