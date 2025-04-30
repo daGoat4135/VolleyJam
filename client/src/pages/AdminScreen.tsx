@@ -67,68 +67,71 @@ export default function AdminScreen() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Rating Engine Settings</h1>
-        <Button onClick={handleExport} variant="outline">
+        <h1 className="text-2xl font-bold text-white">Rating Engine Settings</h1>
+        <Button onClick={handleExport} variant="outline" className="text-white border-white">
           Export Data (CSV)
         </Button>
       </div>
 
-      <Card>
+      <Card className="bg-gray-900 border-gray-700">
         <CardHeader>
-          <h2 className="text-xl font-semibold">System Settings</h2>
+          <h2 className="text-xl font-semibold text-white">System Settings</h2>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="dailyBonus">Daily Bonus Amount</Label>
+              <Label htmlFor="dailyBonus" className="text-white">Daily Bonus Amount</Label>
               <Input
                 id="dailyBonus"
                 type="number"
                 value={settings.dailyBonusAmount}
                 onChange={(e) => setSettings({ ...settings, dailyBonusAmount: parseInt(e.target.value) })}
+                className="text-white bg-gray-800 border-gray-700"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="kFactor">K-Factor (Rating Volatility)</Label>
+              <Label htmlFor="kFactor" className="text-white">K-Factor (Rating Volatility)</Label>
               <Input
                 id="kFactor"
                 type="number"
                 value={settings.kFactor}
                 onChange={(e) => setSettings({ ...settings, kFactor: parseInt(e.target.value) })}
+                className="text-white bg-gray-800 border-gray-700"
               />
-              <p className="text-sm text-gray-500">Higher values = faster rating changes</p>
+              <p className="text-sm text-gray-400">Higher values = faster rating changes</p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="initialRating">Default Initial Rating</Label>
+              <Label htmlFor="initialRating" className="text-white">Default Initial Rating</Label>
               <Input
                 id="initialRating"
                 type="number"
                 value={settings.initialRating}
                 onChange={(e) => setSettings({ ...settings, initialRating: parseInt(e.target.value) })}
+                className="text-white bg-gray-800 border-gray-700"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="victoryMargin">Victory Margin Weight</Label>
+              <Label htmlFor="victoryMargin" className="text-white">Victory Margin Weight</Label>
               <Select 
                 value={settings.victoryMarginWeight}
                 onValueChange={(value) => setSettings({ ...settings, victoryMarginWeight: value })}
               >
-                <SelectTrigger>
+                <SelectTrigger className="text-white bg-gray-800 border-gray-700">
                   <SelectValue placeholder="Select weight"/>
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low (0.5x)</SelectItem>
-                  <SelectItem value="normal">Normal (1.0x)</SelectItem>
-                  <SelectItem value="high">High (1.5x)</SelectItem>
+                <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectItem value="low" className="text-white hover:bg-gray-700">Low (0.5x)</SelectItem>
+                  <SelectItem value="normal" className="text-white hover:bg-gray-700">Normal (1.0x)</SelectItem>
+                  <SelectItem value="high" className="text-white hover:bg-gray-700">High (1.5x)</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-sm text-gray-500">How much winning by a large margin affects ratings</p>
+              <p className="text-sm text-gray-400">How much winning by a large margin affects ratings</p>
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
               Save Settings
             </Button>
           </form>
