@@ -5,6 +5,7 @@ import {
   gameLogs, type GameLog, type InsertGameLog,
   users, type User, type InsertUser 
 } from "@shared/schema";
+import { ratingEngine } from './ratingEngine';
 
 export interface IStorage {
   // Users
