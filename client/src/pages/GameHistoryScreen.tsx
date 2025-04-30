@@ -24,6 +24,11 @@ export default function GameHistoryScreen() {
     queryKey: ['/api/matches'],
   });
 
+  // Fetch all sets
+  const { data: sets = [] } = useQuery<Set[]>({
+    queryKey: ['/api/sets'],
+  });
+
   // Fetch all players
   const { data: players = [], isLoading: isLoadingPlayers } = useQuery<Player[]>({
     queryKey: ['/api/players'],
