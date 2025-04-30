@@ -59,26 +59,41 @@ const ResultScreen: React.FC = () => {
 
     try {
       const canvas = await html2canvas(resultCardRef.current);
-      const image = canvas.toDataURL('image/png');
-
-      const link = document.createElement('a');
-      link.href = image;
-      link.download = `volleyball-jam-result-${matchId}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      toast({
-        title: 'Image Generated',
-        description: 'Match result image has been saved to your device.',
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => resolve(blob!), 'image/png');
       });
+      
+      const file = new File([blob], `volleyball-jam-result-${matchId}.png`, { type: 'image/png' });
 
-      playSound('select');
+      if (navigator.share) {
+        await navigator.share({
+          files: [file],
+          title: 'Volleyball Jam Result',
+          text: 'Check out my match result!'
+        });
+        
+        playSound('select');
+      } else {
+        // Fallback for browsers that don't support sharing
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `volleyball-jam-result-${matchId}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        toast({
+          title: 'Image Saved',
+          description: 'Match result image has been saved to your device.',
+        });
+      }
     } catch (error) {
-      console.error('Error generating image:', error);
+      console.error('Error sharing result:', error);
       toast({
         title: 'Error',
-        description: 'Failed to generate result image. Please try again.',
+        description: 'Failed to share result. Please try again.',
         variant: 'destructive',
       });
     } finally {
