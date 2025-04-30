@@ -34,7 +34,8 @@ export default function AdminScreen() {
       const response = await apiRequest('POST', '/api/rating-settings', settings);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (newSettings) => {
+      setSettings(newSettings);
       toast({
         title: 'Settings Updated',
         description: 'Rating engine settings have been saved.',
