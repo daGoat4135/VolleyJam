@@ -8,6 +8,7 @@ import { queryClient } from '@/lib/queryClient';
 import TeamSection from '@/components/TeamSection';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 const SelectionScreen: React.FC = () => {
   const [, navigate] = useLocation();
@@ -27,7 +28,16 @@ const SelectionScreen: React.FC = () => {
     if (selectedWestPlayers.some(p => p.id === player.id)) {
       setSelectedWestPlayers(selectedWestPlayers.filter(p => p.id !== player.id));
     } else if (selectedWestPlayers.length < 2) {
-      setSelectedWestPlayers([...selectedWestPlayers, player]);
+      const newSelected = [...selectedWestPlayers, player];
+      setSelectedWestPlayers(newSelected);
+      if (newSelected.length === 2 && selectedEastPlayers.length === 2) {
+        playSound('select');
+        toast({
+          title: "All Players Selected!",
+          description: "Ready to start the match",
+          action: <ToastAction altText="Start Match" onClick={handleStartMatch}>START MATCH</ToastAction>
+        });
+      }
     } else {
       // Replace the first player if already have 2 selected
       setSelectedWestPlayers([selectedWestPlayers[1], player]);
@@ -39,7 +49,16 @@ const SelectionScreen: React.FC = () => {
     if (selectedEastPlayers.some(p => p.id === player.id)) {
       setSelectedEastPlayers(selectedEastPlayers.filter(p => p.id !== player.id));
     } else if (selectedEastPlayers.length < 2) {
-      setSelectedEastPlayers([...selectedEastPlayers, player]);
+      const newSelected = [...selectedEastPlayers, player];
+      setSelectedEastPlayers(newSelected);
+      if (newSelected.length === 2 && selectedWestPlayers.length === 2) {
+        playSound('select');
+        toast({
+          title: "All Players Selected!",
+          description: "Ready to start the match",
+          action: <ToastAction altText="Start Match" onClick={handleStartMatch}>START MATCH</ToastAction>
+        });
+      }
     } else {
       // Replace the first player if already have 2 selected
       setSelectedEastPlayers([selectedEastPlayers[1], player]);
