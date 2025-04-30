@@ -170,34 +170,7 @@ export class MemStorage implements IStorage {
     );
   }
   
-  async getSet(id: number): Promise<Set | undefined> {
-    return this.sets.get(id);
-  }
-  
-  async createSet(insertSet: InsertSet): Promise<Set> {
-    const id = this.setCurrentId++;
-    const set: Set = { 
-      ...insertSet, 
-      id, 
-      westScore: 0, 
-      eastScore: 0, 
-      winningDivision: null,
-      isComplete: false 
-    };
-    this.sets.set(id, set);
-    return set;
-  }
-  
-  async updateSet(id: number, data: UpdateSet): Promise<Set> {
-    const set = this.sets.get(id);
-    if (!set) {
-      throw new Error(`Set with id ${id} not found`);
-    }
-    
-    const updatedSet = { ...set, ...data };
-    this.sets.set(id, updatedSet);
-    return updatedSet;
-  }
+  // Remove set-related methods since we're not using sets anymore
   
   // Game Logs
   async getGameLogs(matchId: number): Promise<GameLog[]> {

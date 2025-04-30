@@ -34,17 +34,6 @@ const MatchScreen: React.FC = () => {
 
   // Update match mutation
   const updateMatchMutation = useMutation({
-    mutationFn: async (data: { id: number, westScore: number, eastScore: number, isComplete: boolean }) => {
-      const response = await apiRequest('PATCH', `/api/matches/${data.id}`, data);
-      return await response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/matches/${matchId}`] });
-    },
-  });
-
-  // Update match mutation
-  const updateMatchMutation = useMutation({
     mutationFn: async (data: Partial<Match>) => {
       const response = await apiRequest('PATCH', `/api/matches/${matchId}`, data);
       return await response.json();
@@ -57,13 +46,14 @@ const MatchScreen: React.FC = () => {
     },
   });
 
+
   // Helper functions
   const getPlayer = (id: number | undefined) => {
     if (!id || !players) return null;
     return players.find(p => p.id === id);
   };
 
-  
+
 
   const handleEndGame = () => {
     const winningDivision = westScore > eastScore ? 'west' : 'east';
@@ -78,19 +68,6 @@ const MatchScreen: React.FC = () => {
       mvpPlayerId: winningDivision === 'west' ? matchData?.westPlayer1Id : matchData?.eastPlayer1Id
     });
 
-    // Update the final set with scores
-    if (matchData) {
-      const latestSet = sets?.[sets.length - 1];
-      if (latestSet) {
-        updateSetMutation.mutate({
-          id: latestSet.id,
-          westScore,
-          eastScore,
-          winningDivision,
-          isComplete: true
-        });
-      }
-    }
 
     playSound('win');
   };

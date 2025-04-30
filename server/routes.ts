@@ -39,18 +39,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const matchData = insertMatchSchema.parse(req.body);
       const match = await storage.createMatch(matchData);
 
-      // Create first set automatically
-      const setData = {
-        matchId: match.id,
-        setNumber: 1
-      };
-      const set = await storage.createSet(setData);
-
       // Add initial log message
       await storage.createGameLog({
         matchId: match.id,
-        setId: set.id,
-        message: "Match started! First to 21 points wins."
+        message: "Game started! First to 21 points wins."
       });
 
       res.status(201).json(match);
@@ -99,7 +91,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updateSchema = z.object({
         isComplete: z.boolean().optional(),
         winningDivision: z.string().optional(),
-        mvpPlayerId: z.number().optional()
+        mvpPlayerId: z.number().optional(),
+        westScore: z.number().optional(),
+        eastScore: z.number().optional()
       });
 
       const updateData = updateSchema.parse(req.body);
@@ -116,11 +110,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           storage.getPlayer(match.eastPlayer2Id)
         ]);
 
-        // Calculate scores and point differences
-        const sets = await storage.getSets(match.id);
-        const totalWestScore = sets.reduce((sum, set) => sum + set.westScore, 0);
-        const totalEastScore = sets.reduce((sum, set) => sum + set.eastScore, 0);
-        const scoreDiff = Math.abs(totalWestScore - totalEastScore);
+        // Calculate score difference
+        const scoreDiff = Math.abs(match.westScore - match.eastScore);
 
         // Update ratings for all players
         const isWestWinner = updateData.winningDivision === 'west';
