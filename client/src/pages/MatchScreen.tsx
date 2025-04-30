@@ -80,16 +80,17 @@ const MatchScreen: React.FC = () => {
 
       if (hasWinner) {
         toast({
-        title: "Game Point!",
-        description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
-        action: (
-          <ToastAction altText="End Game" onClick={handleEndGame}>
-            END GAME
-          </ToastAction>
-        ),
-      });
+          title: "Game Point!",
+          description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
+          action: (
+            <ToastAction altText="End Game" onClick={handleEndGame}>
+              END GAME
+            </ToastAction>
+          ),
+        });
+      }
     }
-  }, [westScore, eastScore]);
+  }, [westScore, eastScore, toast, handleEndGame]);
 
   // Get team players
   const westPlayer1 = getPlayer(matchData?.westPlayer1Id);
