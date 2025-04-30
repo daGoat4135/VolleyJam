@@ -145,28 +145,7 @@ const SelectionScreen: React.FC = () => {
           >
             GAME HISTORY
           </Button>
-          <Button
-            className="font-arcade w-full md:w-auto px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
-            onClick={async () => {
-              const response = await fetch('/api/daily-mvp', { method: 'POST' });
-              const result = await response.json();
-
-              if (result.success) {
-                toast({
-                  title: "MVP Awarded! 🏆",
-                  description: `${result.mvp.name} scored ${result.points} points today! (+${result.ratingBonus} rating)`
-                });
-              } else {
-                toast({
-                  title: "Cannot Award MVP",
-                  description: result.message,
-                  variant: "destructive"
-                });
-              }
-            }}
-          >
-            AWARD DAILY MVP
-          </Button>
+          
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ interface PlayerStats {
   wins: number;
   matches: number;
   winRate: number;
-  mvps: number;
+  
   glickoScore: number;
 }
 
@@ -37,7 +37,7 @@ const LeaderboardScreen: React.FC = () => {
         wins: 0,
         matches: 0,
         winRate: 0,
-        mvps: 0,
+        
         glickoScore: player.rating || 1500
       };
     });
@@ -129,10 +129,7 @@ const LeaderboardScreen: React.FC = () => {
                       <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
                         <span>{(stat.winRate / 100).toFixed(3)}</span>
                       </div>
-                      <div>
-                        <span className="text-gray-400">MVP:</span> 
-                        <span className="text-[#FFD700] ml-1">{stat.mvps}</span>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
