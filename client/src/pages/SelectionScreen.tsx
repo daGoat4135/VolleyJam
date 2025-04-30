@@ -92,6 +92,15 @@ const SelectionScreen: React.FC = () => {
     createMatchMutation.mutate(matchData);
   };
 
+  useEffect(() => {
+    if (selectedWestPlayers.length === 2 && selectedEastPlayers.length === 2) {
+      const startButton = document.querySelector('.start-match-button');
+      if (startButton) {
+        startButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [selectedWestPlayers, selectedEastPlayers]);
+
   return (
     <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4">
       <div className="mt-8 mb-6 text-center">
@@ -135,7 +144,7 @@ const SelectionScreen: React.FC = () => {
         <Button
           onClick={handleStartMatch}
           disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
-          className="font-arcade w-full md:w-auto px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
+          className="font-arcade w-full md:w-auto px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow start-match-button"
         >
           {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
         </Button>
@@ -145,7 +154,7 @@ const SelectionScreen: React.FC = () => {
           >
             GAME HISTORY
           </Button>
-          
+
       </div>
     </div>
   );
