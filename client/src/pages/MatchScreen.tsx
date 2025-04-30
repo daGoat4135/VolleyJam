@@ -144,7 +144,7 @@ const MatchScreen: React.FC = () => {
               id="end-game-btn"
               className="font-arcade text-sm w-full px-4 py-2 bg-[#FFD700] text-black rounded mb-3 hover:bg-opacity-80"
               onClick={handleEndGame}
-              disabled={(westScore < 21 && eastScore < 21) || Math.abs(westScore - eastScore) < 2}
+              disabled={!westScore || !eastScore}
             >
               END GAME
             </Button>
