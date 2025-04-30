@@ -32,20 +32,14 @@ const MatchScreen: React.FC = () => {
     queryKey: ['/api/players'],
   });
 
-  // Fetch sets data
-  const { data: sets } = useQuery<Set[]>({
-    queryKey: [`/api/matches/${matchId}/sets`],
-    enabled: matchId > 0,
-  });
-
-  // Update set mutation
-  const updateSetMutation = useMutation({
-    mutationFn: async (data: { id: number } & UpdateSet) => {
-      const response = await apiRequest('PATCH', `/api/sets/${data.id}`, data);
+  // Update match mutation
+  const updateMatchMutation = useMutation({
+    mutationFn: async (data: { id: number, westScore: number, eastScore: number, isComplete: boolean }) => {
+      const response = await apiRequest('PATCH', `/api/matches/${data.id}`, data);
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/matches/${matchId}/sets`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/matches/${matchId}`] });
     },
   });
 

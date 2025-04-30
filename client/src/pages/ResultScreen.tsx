@@ -46,10 +46,9 @@ const ResultScreen: React.FC = () => {
   const eastPlayer1 = getPlayer(matchData?.eastPlayer1Id);
   const eastPlayer2 = getPlayer(matchData?.eastPlayer2Id);
 
-  // Get final scores from last completed set
-  const latestSet = sets?.find(set => set.isComplete);
-  const finalWestScore = latestSet?.westScore || 0;
-  const finalEastScore = latestSet?.eastScore || 0;
+  // Get final scores
+  const finalWestScore = matchData?.westScore || 0;
+  const finalEastScore = matchData?.eastScore || 0;
 
   // Handle share result
   const handleShareResult = async () => {

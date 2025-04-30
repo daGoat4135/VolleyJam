@@ -136,7 +136,7 @@ export default function GameHistoryScreen() {
                           {eastPlayer1} / {eastPlayer2}
                         </TableCell>
                         <TableCell className="font-digital">
-                          {sets?.filter(s => s.matchId === match.id).reduce((sum, set) => sum + (set.westScore || 0), 0)} - {sets?.filter(s => s.matchId === match.id).reduce((sum, set) => sum + (set.eastScore || 0), 0)}
+                          {match.westScore || 0} - {match.eastScore || 0}
                         </TableCell>
                         <TableCell>
                           {match.isComplete ? (
