@@ -303,7 +303,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const playerPoints: Record<number, number> = {};
     
     // For each match, add the team's score to each player on that team
-    todayMatches.forEach(match => {
+    for (const match of todayMatches) {
       const sets = await storage.getSets(match.id);
       const westScore = sets.reduce((sum, set) => sum + (set.westScore || 0), 0);
       const eastScore = sets.reduce((sum, set) => sum + (set.eastScore || 0), 0);
@@ -312,7 +312,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (match.westPlayer2Id) playerPoints[match.westPlayer2Id] = (playerPoints[match.westPlayer2Id] || 0) + westScore;
       if (match.eastPlayer1Id) playerPoints[match.eastPlayer1Id] = (playerPoints[match.eastPlayer1Id] || 0) + eastScore;
       if (match.eastPlayer2Id) playerPoints[match.eastPlayer2Id] = (playerPoints[match.eastPlayer2Id] || 0) + eastScore;
-    });
+    }
 
     // Find highest score
     const scores = Object.values(playerPoints);
