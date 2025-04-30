@@ -120,7 +120,7 @@ const LeaderboardScreen: React.FC = () => {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm font-arcade">
                     <div>
                       <span className="text-gray-400">RATING:</span>
-                      <span className={index < 3 ? 'text-[#FFD700] ml-1' : 'text-white ml-1'}>{stat.glickoScore}</span>
+                      <span className={index < 3 ? 'text-[#FFD700] ml-1' : 'text-white ml-1'}>{Math.round(stat.glickoScore)}</span>
                     </div>
                     <div className={index < 3 ? 'text-[#FFD700]' : 'text-white'}>
                       <span>{stat.wins}-{stat.matches - stat.wins}</span>
