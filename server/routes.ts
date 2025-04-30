@@ -301,22 +301,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     // Calculate points per player
     const playerPoints: Record<number, number> = {};
+    
+    // For each match, add the team's score to each player on that team
     todayMatches.forEach(match => {
-      const westPoints = match.westScore || 0;
-      const eastPoints = match.eastScore || 0;
+      const sets = await storage.getSets(match.id);
+      const westScore = sets.reduce((sum, set) => sum + (set.westScore || 0), 0);
+      const eastScore = sets.reduce((sum, set) => sum + (set.eastScore || 0), 0);
       
-      [match.westPlayer1Id, match.westPlayer2Id].forEach(id => {
-        playerPoints[id] = (playerPoints[id] || 0) + westPoints;
-      });
-      
-      [match.eastPlayer1Id, match.eastPlayer2Id].forEach(id => {
-        playerPoints[id] = (playerPoints[id] || 0) + eastPoints;
-      });
+      if (match.westPlayer1Id) playerPoints[match.westPlayer1Id] = (playerPoints[match.westPlayer1Id] || 0) + westScore;
+      if (match.westPlayer2Id) playerPoints[match.westPlayer2Id] = (playerPoints[match.westPlayer2Id] || 0) + westScore;
+      if (match.eastPlayer1Id) playerPoints[match.eastPlayer1Id] = (playerPoints[match.eastPlayer1Id] || 0) + eastScore;
+      if (match.eastPlayer2Id) playerPoints[match.eastPlayer2Id] = (playerPoints[match.eastPlayer2Id] || 0) + eastScore;
     });
 
     // Find highest score
     const scores = Object.values(playerPoints);
     const maxScore = Math.max(...scores);
+    
+    // Find all players with the max score
+    const winners = Object.entries(playerPoints)
+      .filter(([_, score]) => score === maxScore);
     
     // Check for ties
     const winners = Object.entries(playerPoints).filter(([_, score]) => score === maxScore);
