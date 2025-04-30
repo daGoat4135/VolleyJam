@@ -38,9 +38,10 @@ const SelectionScreen: React.FC = () => {
           action: (
             <Button
               onClick={handleStartMatch}
+              disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
               className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
             >
-              START MATCH
+              {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
             </Button>
           )
         });
@@ -66,9 +67,10 @@ const SelectionScreen: React.FC = () => {
           action: (
             <Button
               onClick={handleStartMatch}
+              disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
               className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
             >
-              START MATCH
+              {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
             </Button>
           )
         });
