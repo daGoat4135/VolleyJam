@@ -19,11 +19,11 @@ const LeaderboardScreen: React.FC = () => {
   const [, navigate] = useLocation();
 
   const { data: players = [], isLoading: isLoadingPlayers } = useQuery<Player[]>({
-    queryKey: ['/api/players'],
+    queryKey: ['/api/players']
   });
 
   const { data: matches = [], isLoading: isLoadingMatches } = useQuery<Match[]>({
-    queryKey: ['/api/matches'],
+    queryKey: ['/api/matches']
   });
 
   const playerStats: PlayerStats[] = React.useMemo(() => {
