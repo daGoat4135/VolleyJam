@@ -63,9 +63,7 @@ const MatchScreen: React.FC = () => {
       isComplete: true,
       winningDivision,
       westScore,
-      eastScore,
-      // MVP could be determined by another algorithm
-      mvpPlayerId: winningDivision === 'west' ? matchData?.westPlayer1Id : matchData?.eastPlayer1Id
+      eastScore
     });
 
 
