@@ -68,7 +68,9 @@ const ResultScreen: React.FC = () => {
       const shareData = {
         files: [file],
         title: 'Volleyball Jam Result',
-        text: `${finalWestScore > finalEastScore ? 'WEST' : 'EAST'} WINS! Final score: ${finalWestScore}-${finalEastScore}`
+        text: `${finalWestScore > finalEastScore 
+          ? `${westPlayer1?.name} & ${westPlayer2?.name}` 
+          : `${eastPlayer1?.name} & ${eastPlayer2?.name}`} WIN! Final score: ${finalWestScore}-${finalEastScore}`
       };
       
       if (navigator.canShare && navigator.canShare(shareData)) {
@@ -110,13 +112,13 @@ const ResultScreen: React.FC = () => {
           <h1 className="font-arcade text-2xl text-[#FFD700] mb-2">VOLLEYBALL JAM</h1>
           <h2 className="font-arcade text-xl mb-4">MATCH RESULT</h2>
           <div className="result-badge inline-block bg-[#FFD700] text-black font-arcade px-4 py-2 rounded">
-            {finalWestScore > finalEastScore ? 'WEST WINS!' : 'EAST WINS!'}
+            {finalWestScore > finalEastScore ? `${westPlayer1?.name} & ${westPlayer2?.name} WIN!` : `${eastPlayer1?.name} & ${eastPlayer2?.name} WIN!`}
           </div>
         </div>
 
         <div className="teams-display grid grid-cols-3 gap-4 items-center">
           <div className="west-team text-center">
-            <div className="font-arcade text-[#FF4D4D] mb-2">WEST</div>
+            <div className="font-arcade text-[#FF4D4D] mb-2">{westPlayer1?.name} & {westPlayer2?.name}</div>
             <div className="score font-digital text-4xl text-[#FF4D4D] mb-4">{finalWestScore}</div>
             <div className="team-players flex justify-center space-x-2">
               {westPlayer1 && (
@@ -135,7 +137,7 @@ const ResultScreen: React.FC = () => {
           <div className="vs font-arcade text-4xl text-center">VS</div>
 
           <div className="east-team text-center">
-            <div className="font-arcade text-[#4169E1] mb-2">EAST</div>
+            <div className="font-arcade text-[#4169E1] mb-2">{eastPlayer1?.name} & {eastPlayer2?.name}</div>
             <div className="score font-digital text-4xl text-[#4169E1] mb-4">{finalEastScore}</div>
             <div className="team-players flex justify-center space-x-2">
               {eastPlayer1 && (
