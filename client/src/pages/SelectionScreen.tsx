@@ -8,7 +8,6 @@ import { queryClient } from '@/lib/queryClient';
 import TeamSection from '@/components/TeamSection';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 
 const SelectionScreen: React.FC = () => {
   const [, navigate] = useLocation();
@@ -28,25 +27,7 @@ const SelectionScreen: React.FC = () => {
     if (selectedWestPlayers.some(p => p.id === player.id)) {
       setSelectedWestPlayers(selectedWestPlayers.filter(p => p.id !== player.id));
     } else if (selectedWestPlayers.length < 2) {
-      const newSelected = [...selectedWestPlayers, player];
-      setSelectedWestPlayers(newSelected);
-      if (newSelected.length === 2 && selectedEastPlayers.length === 2) {
-        playSound('select');
-        toast({
-          title: "All Players Selected!",
-          description: "Ready to start the match",
-          action: (
-            <Button
-              onClick={handleStartMatch}
-              disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
-              className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
-            >
-              {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
-            </Button>
-          ),
-          duration: 5000
-        });
-      }
+      setSelectedWestPlayers([...selectedWestPlayers, player]);
     } else {
       // Replace the first player if already have 2 selected
       setSelectedWestPlayers([selectedWestPlayers[1], player]);
@@ -58,25 +39,7 @@ const SelectionScreen: React.FC = () => {
     if (selectedEastPlayers.some(p => p.id === player.id)) {
       setSelectedEastPlayers(selectedEastPlayers.filter(p => p.id !== player.id));
     } else if (selectedEastPlayers.length < 2) {
-      const newSelected = [...selectedEastPlayers, player];
-      setSelectedEastPlayers(newSelected);
-      if (newSelected.length === 2 && selectedWestPlayers.length === 2) {
-        playSound('select');
-        toast({
-          title: "All Players Selected!",
-          description: "Ready to start the match",
-          action: (
-            <Button
-              onClick={handleStartMatch}
-              disabled={selectedWestPlayers.length !== 2 || selectedEastPlayers.length !== 2 || createMatchMutation.isPending}
-              className="font-arcade w-full px-8 py-3 bg-[#4169E1] text-white rounded hover:bg-opacity-80 transition-all duration-300 animate-pulse-glow"
-            >
-              {createMatchMutation.isPending ? 'LOADING...' : 'START MATCH'}
-            </Button>
-          ),
-          duration: 5000
-        });
-      }
+      setSelectedEastPlayers([...selectedEastPlayers, player]);
     } else {
       // Replace the first player if already have 2 selected
       setSelectedEastPlayers([selectedEastPlayers[1], player]);
@@ -182,7 +145,7 @@ const SelectionScreen: React.FC = () => {
           >
             GAME HISTORY
           </Button>
-
+          
       </div>
     </div>
   );
