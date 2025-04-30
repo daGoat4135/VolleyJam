@@ -90,7 +90,7 @@ const MatchScreen: React.FC = () => {
   const eastPlayer2 = getPlayer(matchData?.eastPlayer2Id);
 
   return (
-    <div id="match-screen" className="screen-container active-screen w-full max-w-6xl px-4">
+    <div id="match-screen" className="screen-container active-screen w-full max-w-[90rem] px-8">
       <div className="mb-6 text-center">
         <h2 className="font-arcade text-lg md:text-2xl mb-1">VOLLEYBALL GAME</h2>
         <p className="font-digital text-sm text-gray-400">First to 21 points (win by 2)</p>
