@@ -67,11 +67,27 @@ export default function AdminScreen() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-white">Rating Engine Settings</h1>
-        <Button onClick={handleExport} variant="outline" className="text-white border-white">
-          Export Data (CSV)
-        </Button>
+      <div className="flex flex-col gap-4 mb-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-white">Rating Engine Settings</h1>
+          <Button onClick={handleExport} variant="outline" className="text-white border-white">
+            Export Data (CSV)
+          </Button>
+        </div>
+        <div className="flex justify-center space-x-4">
+          <Button
+            className="font-arcade px-6 py-2 bg-[#FF4D4D] text-black hover:bg-opacity-80"
+            onClick={() => navigate('/')}
+          >
+            BACK TO SELECTION
+          </Button>
+          <Button
+            className="font-arcade px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
+            onClick={() => navigate('/leaderboard')}
+          >
+            VIEW LEADERBOARD
+          </Button>
+        </div>
       </div>
 
       <Card className="bg-gray-900 border-gray-700">
