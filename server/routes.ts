@@ -286,11 +286,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Track last MVP award date
+  let lastMvpAwardDate: Date | null = null;
+
   // Calculate and award daily MVP
   app.post("/api/daily-mvp", async (_req: Request, res: Response) => {
-    // Get today's matches
+    // Get today's date
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // Check if MVP was already awarded today
+    if (lastMvpAwardDate && lastMvpAwardDate.getTime() === today.getTime()) {
+      return res.status(400).json({
+        success: false,
+        message: "MVP has already been awarded today"
+      });
+    }
     
     const matches = await storage.getMatches();
     const todayMatches = matches.filter(m => {
@@ -333,6 +344,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           rating: newRating,
           lastPointsReset: new Date()
         });
+        
+        // Track the award date
+        lastMvpAwardDate = today;
         
         return res.json({ 
           success: true, 
