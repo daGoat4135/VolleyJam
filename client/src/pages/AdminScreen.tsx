@@ -160,6 +160,33 @@ export default function AdminScreen() {
               Save Settings
             </Button>
           </form>
+
+          <div className="mt-6 pt-6 border-t border-gray-700">
+            <h3 className="text-lg font-semibold text-white mb-2">Danger Zone</h3>
+            <Button 
+              variant="destructive"
+              className="w-full"
+              onClick={async () => {
+                if (window.confirm('Are you sure you want to clear all match history and reset player ratings? This cannot be undone.')) {
+                  try {
+                    await apiRequest('POST', '/api/clear-database');
+                    toast({
+                      title: 'Database Cleared',
+                      description: 'All match history has been cleared and player ratings have been reset.',
+                    });
+                  } catch (error) {
+                    toast({
+                      title: 'Error',
+                      description: 'Failed to clear database.',
+                      variant: 'destructive',
+                    });
+                  }
+                }
+              }}
+            >
+              Clear Database
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

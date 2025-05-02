@@ -356,6 +356,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.send(headers + csv);
   });
 
+  // Clear database endpoint
+  app.post("/api/clear-database", async (_req: Request, res: Response) => {
+    try {
+      await storage.clearDatabase();
+      res.json({ message: "Database cleared successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to clear database" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

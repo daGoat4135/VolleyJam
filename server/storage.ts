@@ -43,6 +43,20 @@ export class PostgresStorage implements IStorage {
   private pool: Pool;
   private db: ReturnType<typeof drizzle>;
 
+  async clearDatabase(): Promise<void> {
+    await this.db.delete(matches);
+    await this.db.delete(gameLogs);
+    // Reset player ratings but keep the players
+    const players = await this.getPlayers();
+    for (const player of players) {
+      await this.updatePlayer(player.id, {
+        rating: ratingEngine.getInitialRating().rating,
+        ratingDeviation: ratingEngine.getInitialRating().ratingDeviation,
+        volatility: ratingEngine.getInitialRating().volatility
+      });
+    }
+  }
+
   constructor() {
     if (!process.env.DATABASE_URL) {
       throw new Error('DATABASE_URL environment variable is required');
