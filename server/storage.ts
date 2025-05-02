@@ -36,34 +36,34 @@ export interface IStorage {
   createGameLog(gameLog: InsertGameLog): Promise<GameLog>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private players: Map<number, Player>;
-  private matches: Map<number, Match>;
-  private sets: Map<number, Set>;
-  private gameLogs: Map<number, GameLog>;
-  
-  private userCurrentId: number;
-  private playerCurrentId: number;
-  private matchCurrentId: number;
-  private setCurrentId: number;
-  private gameLogCurrentId: number;
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+
+export class PostgresStorage implements IStorage {
+  private pool: Pool;
+  private db: ReturnType<typeof drizzle>;
 
   constructor() {
-    this.users = new Map();
-    this.players = new Map();
-    this.matches = new Map();
-    this.sets = new Map();
-    this.gameLogs = new Map();
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL environment variable is required');
+    }
+
+    this.pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      max: 10
+    });
     
-    this.userCurrentId = 1;
-    this.playerCurrentId = 1;
-    this.matchCurrentId = 1;
-    this.setCurrentId = 1;
-    this.gameLogCurrentId = 1;
+    this.db = drizzle(this.pool);
     
-    // Initialize with some sample players
-    this.initializePlayers();
+    // Initialize players if needed
+    this.initializePlayersIfNeeded();
+  }
+
+  private async initializePlayersIfNeeded() {
+    const existingPlayers = await this.getPlayers();
+    if (existingPlayers.length === 0) {
+      await this.initializePlayers();
+    }
   }
 
   // Users
@@ -299,4 +299,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new PostgresStorage();
