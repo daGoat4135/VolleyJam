@@ -5,6 +5,7 @@ import {
   gameLogs, type GameLog, type InsertGameLog,
   users, type User, type InsertUser 
 } from "@shared/schema";
+import { eq } from "drizzle-orm";
 import { ratingEngine } from './ratingEngine';
 
 export interface IStorage {
@@ -46,6 +47,8 @@ export class PostgresStorage implements IStorage {
   async clearDatabase(): Promise<void> {
     await this.db.delete(matches);
     await this.db.delete(gameLogs);
+    await this.db.delete(sets);
+    
     // Reset player ratings but keep the players
     const players = await this.getPlayers();
     for (const player of players) {
@@ -82,122 +85,153 @@ export class PostgresStorage implements IStorage {
 
   // Users
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await this.db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await this.db.select().from(users).where(eq(users.username, username));
+    return user;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userCurrentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await this.db.insert(users).values(insertUser).returning();
     return user;
   }
   
   // Players
   async getPlayers(): Promise<Player[]> {
-    return Array.from(this.players.values());
+    return this.db.select().from(players);
   }
   
   async getPlayersByDivision(division: string): Promise<Player[]> {
-    return Array.from(this.players.values()).filter(
-      player => player.division.toLowerCase() === division.toLowerCase()
-    );
+    return this.db.select().from(players).where(eq(players.division, division));
   }
   
   async getPlayer(id: number): Promise<Player | undefined> {
-    return this.players.get(id);
+    const [player] = await this.db.select().from(players).where(eq(players.id, id));
+    return player;
   }
   
   async createPlayer(insertPlayer: InsertPlayer): Promise<Player> {
-    const id = this.playerCurrentId++;
-    const player: Player = { 
-      ...insertPlayer, 
-      id,
-      rating: ratingEngine.getInitialRating().rating,
-      ratingDeviation: ratingEngine.getInitialRating().ratingDeviation,
-      volatility: ratingEngine.getInitialRating().volatility
-    };
-    this.players.set(id, player);
+    const [player] = await this.db.insert(players)
+      .values({
+        ...insertPlayer,
+        rating: ratingEngine.getInitialRating().rating,
+        ratingDeviation: ratingEngine.getInitialRating().ratingDeviation,
+        volatility: ratingEngine.getInitialRating().volatility,
+        dailyPoints: 0
+      })
+      .returning();
     return player;
   }
 
   async updatePlayer(id: number, ratingData: { rating: number; ratingDeviation: number; volatility: number }): Promise<Player> {
-    const player = this.players.get(id);
-    if (!player) {
+    const [updatedPlayer] = await this.db
+      .update(players)
+      .set(ratingData)
+      .where(eq(players.id, id))
+      .returning();
+      
+    if (!updatedPlayer) {
       throw new Error(`Player with id ${id} not found`);
     }
     
-    const updatedPlayer = { 
-      ...player, 
-      rating: ratingData.rating,
-      ratingDeviation: ratingData.ratingDeviation,
-      volatility: ratingData.volatility
-    };
-    this.players.set(id, updatedPlayer);
     return updatedPlayer;
   }
   
   // Matches
   async getMatches(): Promise<Match[]> {
-    return Array.from(this.matches.values());
+    return this.db.select().from(matches);
   }
   
   async getMatch(id: number): Promise<Match | undefined> {
-    return this.matches.get(id);
+    const [match] = await this.db.select().from(matches).where(eq(matches.id, id));
+    return match;
   }
   
   async createMatch(insertMatch: InsertMatch): Promise<Match> {
-    const id = this.matchCurrentId++;
-    const now = new Date();
-    const match: Match = { 
-      ...insertMatch, 
-      id, 
-      createdAt: now, 
-      isComplete: false,
-      winningDivision: null,
-      mvpPlayerId: null
-    };
-    this.matches.set(id, match);
+    const [match] = await this.db.insert(matches)
+      .values({
+        ...insertMatch,
+        isComplete: false,
+        westScore: 0,
+        eastScore: 0
+      })
+      .returning();
     return match;
   }
   
   async updateMatch(id: number, data: Partial<Match>): Promise<Match> {
-    const match = this.matches.get(id);
-    if (!match) {
+    const [updatedMatch] = await this.db
+      .update(matches)
+      .set(data)
+      .where(eq(matches.id, id))
+      .returning();
+      
+    if (!updatedMatch) {
       throw new Error(`Match with id ${id} not found`);
     }
     
-    const updatedMatch = { ...match, ...data };
-    this.matches.set(id, updatedMatch);
     return updatedMatch;
   }
   
   // Sets
   async getSets(matchId: number): Promise<Set[]> {
-    return Array.from(this.sets.values()).filter(
-      set => set.matchId === matchId
-    );
+    return this.db
+      .select()
+      .from(sets)
+      .where(eq(sets.matchId, matchId))
+      .orderBy(sets.setNumber);
   }
   
-  // Remove set-related methods since we're not using sets anymore
+  async getSet(id: number): Promise<Set | undefined> {
+    const [set] = await this.db.select().from(sets).where(eq(sets.id, id));
+    return set;
+  }
+  
+  async createSet(insertSet: InsertSet): Promise<Set> {
+    const [set] = await this.db
+      .insert(sets)
+      .values({
+        ...insertSet,
+        westScore: 0,
+        eastScore: 0,
+        isComplete: false,
+        winningDivision: null
+      })
+      .returning();
+    return set;
+  }
+  
+  async updateSet(id: number, data: UpdateSet): Promise<Set> {
+    const [updatedSet] = await this.db
+      .update(sets)
+      .set(data)
+      .where(eq(sets.id, id))
+      .returning();
+      
+    if (!updatedSet) {
+      throw new Error(`Set with id ${id} not found`);
+    }
+    
+    return updatedSet;
+  }
   
   // Game Logs
   async getGameLogs(matchId: number): Promise<GameLog[]> {
-    return Array.from(this.gameLogs.values())
-      .filter(log => log.matchId === matchId)
-      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+    return this.db
+      .select()
+      .from(gameLogs)
+      .where(eq(gameLogs.matchId, matchId))
+      .orderBy(gameLogs.timestamp);
   }
   
   async createGameLog(insertGameLog: InsertGameLog): Promise<GameLog> {
-    const id = this.gameLogCurrentId++;
-    const now = new Date();
-    const gameLog: GameLog = { ...insertGameLog, id, timestamp: now };
-    this.gameLogs.set(id, gameLog);
+    const [gameLog] = await this.db
+      .insert(gameLogs)
+      .values(insertGameLog)
+      .returning();
     return gameLog;
   }
   

@@ -69,10 +69,38 @@ export const insertMatchSchema = createInsertSchema(matches).pick({
 export type InsertMatch = z.infer<typeof insertMatchSchema>;
 export type Match = typeof matches.$inferSelect;
 
+// Sets track individual sets within a match
+export const sets = pgTable("sets", {
+  id: serial("id").primaryKey(),
+  matchId: integer("match_id").notNull(),
+  setNumber: integer("set_number").notNull(),
+  westScore: integer("west_score").default(0).notNull(),
+  eastScore: integer("east_score").default(0).notNull(),
+  isComplete: boolean("is_complete").default(false).notNull(),
+  winningDivision: text("winning_division"),
+});
+
+export const insertSetSchema = createInsertSchema(sets).pick({
+  matchId: true,
+  setNumber: true,
+});
+
+export const updateSetSchema = createInsertSchema(sets).pick({
+  westScore: true,
+  eastScore: true,
+  winningDivision: true,
+  isComplete: true,
+});
+
+export type InsertSet = z.infer<typeof insertSetSchema>;
+export type UpdateSet = z.infer<typeof updateSetSchema>;
+export type Set = typeof sets.$inferSelect;
+
 // Game logs track events during a match
 export const gameLogs = pgTable("game_logs", {
   id: serial("id").primaryKey(),
   matchId: integer("match_id").notNull(),
+  setId: integer("set_id").notNull(),
   message: text("message").notNull(),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
