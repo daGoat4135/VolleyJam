@@ -104,7 +104,7 @@ const MatchScreen: React.FC = () => {
         ),
       });
     }
-  }, [westScore, eastScore]);
+  }, [westScore, eastScore, dismiss, toast, handleEndGame]);
 
   // Get team players
   const westPlayer1 = getPlayer(matchData?.westPlayer1Id);

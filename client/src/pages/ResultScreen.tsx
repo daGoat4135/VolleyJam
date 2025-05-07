@@ -29,7 +29,7 @@ const ResultScreen: React.FC = () => {
   });
 
   // Fetch sets data
-  const { data: sets } = useQuery<Set[]>({
+  const { data: sets } = useQuery<any[]>({
     queryKey: [`/api/matches/${matchId}/sets`],
     enabled: matchId > 0,
   });
