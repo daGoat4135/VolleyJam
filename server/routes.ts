@@ -37,9 +37,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const matchData = insertMatchSchema.parse(req.body);
       const match = await storage.createMatch(matchData);
 
+      // Create an initial set for the match
+      const initialSet = await storage.createSet({
+        matchId: match.id,
+        setNumber: 1
+      });
+
       // Add initial log message
       await storage.createGameLog({
         matchId: match.id,
+        setId: initialSet.id,
         message: "Game started! First to 21 points wins."
       });
 
