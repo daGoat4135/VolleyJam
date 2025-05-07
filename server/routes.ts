@@ -106,63 +106,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // If match is complete, update player ratings
       if (updateData.isComplete && updateData.winningDivision) {
-        const westPlayers = await Promise.all([
-          storage.getPlayer(match.westPlayer1Id),
-          storage.getPlayer(match.westPlayer2Id)
-        ]);
-        const eastPlayers = await Promise.all([
-          storage.getPlayer(match.eastPlayer1Id),
-          storage.getPlayer(match.eastPlayer2Id)
-        ]);
+        try {
+          console.log('Starting player rating update for match:', id);
+          
+          // Fetch players
+          const westPlayers = await Promise.all([
+            storage.getPlayer(match.westPlayer1Id),
+            storage.getPlayer(match.westPlayer2Id)
+          ]);
+          const eastPlayers = await Promise.all([
+            storage.getPlayer(match.eastPlayer1Id),
+            storage.getPlayer(match.eastPlayer2Id)
+          ]);
 
-        // Calculate score difference
-        const westScore = updateData.westScore || 0;
-        const eastScore = updateData.eastScore || 0;
-        const scoreDiff = Math.abs(westScore - eastScore);
+          // Calculate score difference
+          const westScore = updateData.westScore || 0;
+          const eastScore = updateData.eastScore || 0;
+          const scoreDiff = Math.abs(westScore - eastScore);
+          
+          console.log('Match scores:', { westScore, eastScore, scoreDiff });
 
-        // Update ratings for all players
-        const isWestWinner = updateData.winningDivision === 'west';
-        const westResult = isWestWinner ? 1 : 0;
-        const eastResult = isWestWinner ? 0 : 1;
-
-        for (const westPlayer of westPlayers) {
-          if (westPlayer) {
-            const newRating = ratingEngine.calculateNewRating(
-              {
-                rating: westPlayer.rating || ratingEngine.getInitialRating().rating,
-                ratingDeviation: westPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: westPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
-              },
-              eastPlayers.map(p => ({
-                rating: p?.rating || ratingEngine.getInitialRating().rating,
-                ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
-              })),
-              [westResult, westResult],
-              [scoreDiff, scoreDiff]
-            );
-            await storage.updatePlayer(westPlayer.id, newRating);
+          // Update ratings for all players
+          const isWestWinner = updateData.winningDivision === 'west';
+          const westResult = isWestWinner ? 1 : 0;
+          const eastResult = isWestWinner ? 0 : 1;
+          
+          // Process west players
+          for (const westPlayer of westPlayers) {
+            if (westPlayer) {
+              try {
+                console.log(`Processing west player ${westPlayer.id} (${westPlayer.name})`);
+                
+                const newRating = ratingEngine.calculateNewRating(
+                  {
+                    rating: westPlayer.rating || ratingEngine.getInitialRating().rating,
+                    ratingDeviation: westPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                    volatility: westPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
+                  },
+                  eastPlayers.map(p => ({
+                    rating: p?.rating || ratingEngine.getInitialRating().rating,
+                    ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                    volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
+                  })),
+                  [westResult, westResult],
+                  [scoreDiff, scoreDiff]
+                );
+                
+                await storage.updatePlayer(westPlayer.id, newRating);
+                console.log(`Updated west player ${westPlayer.id} rating to:`, newRating);
+              } catch (playerError) {
+                console.error(`Error updating west player ${westPlayer.id} rating:`, playerError);
+                // Continue with other players even if one fails
+              }
+            }
           }
-        }
 
-        for (const eastPlayer of eastPlayers) {
-          if (eastPlayer) {
-            const newRating = ratingEngine.calculateNewRating(
-              {
-                rating: eastPlayer.rating || ratingEngine.getInitialRating().rating,
-                ratingDeviation: eastPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: eastPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
-              },
-              westPlayers.map(p => ({
-                rating: p?.rating || ratingEngine.getInitialRating().rating,
-                ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
-              })),
-              [eastResult, eastResult],
-              [scoreDiff, scoreDiff]
-            );
-            await storage.updatePlayer(eastPlayer.id, newRating);
+          // Process east players
+          for (const eastPlayer of eastPlayers) {
+            if (eastPlayer) {
+              try {
+                console.log(`Processing east player ${eastPlayer.id} (${eastPlayer.name})`);
+                
+                const newRating = ratingEngine.calculateNewRating(
+                  {
+                    rating: eastPlayer.rating || ratingEngine.getInitialRating().rating,
+                    ratingDeviation: eastPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                    volatility: eastPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
+                  },
+                  westPlayers.map(p => ({
+                    rating: p?.rating || ratingEngine.getInitialRating().rating,
+                    ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+                    volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
+                  })),
+                  [eastResult, eastResult],
+                  [scoreDiff, scoreDiff]
+                );
+                
+                await storage.updatePlayer(eastPlayer.id, newRating);
+                console.log(`Updated east player ${eastPlayer.id} rating to:`, newRating);
+              } catch (playerError) {
+                console.error(`Error updating east player ${eastPlayer.id} rating:`, playerError);
+                // Continue with other players even if one fails
+              }
+            }
           }
+          
+          console.log('Successfully completed player rating updates for match:', id);
+        } catch (ratingError) {
+          // Log the error but don't stop the response - the match is already updated
+          console.error('Error updating player ratings:', ratingError);
         }
       }
 

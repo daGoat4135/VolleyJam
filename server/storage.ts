@@ -127,11 +127,19 @@ export class PostgresStorage implements IStorage {
   }
 
   async updatePlayer(id: number, ratingData: { rating: number; ratingDeviation: number; volatility: number | string }): Promise<Player> {
+    console.log('Updating player', id, 'with rating data:', ratingData);
+    
+    // Round the rating and ratingDeviation to integers
+    const roundedRating = Math.round(ratingData.rating);
+    const roundedRatingDeviation = Math.round(ratingData.ratingDeviation);
+    
+    console.log('Rounded values:', { roundedRating, roundedRatingDeviation });
+    
     const [updatedPlayer] = await this.db
       .update(players)
       .set({
-        rating: ratingData.rating,
-        ratingDeviation: ratingData.ratingDeviation,
+        rating: roundedRating,
+        ratingDeviation: roundedRatingDeviation,
         volatility: typeof ratingData.volatility === 'number' ? String(ratingData.volatility) : ratingData.volatility
       })
       .where(eq(players.id, id))
