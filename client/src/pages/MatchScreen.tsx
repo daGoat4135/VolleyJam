@@ -15,7 +15,7 @@ const MatchScreen: React.FC = () => {
   const [, navigate] = useLocation();
   const [match, params] = useRoute<{ id: string }>('/match/:id');
   const matchId = parseInt(params?.id || '0');
-  const { toast, dismiss } = useToast();
+  const { toast } = useToast();
 
   const logContainerRef = useRef<HTMLDivElement>(null);
 
@@ -88,9 +88,6 @@ const MatchScreen: React.FC = () => {
     const bothScoresEntered = westScore > 0 && eastScore > 0;
 
     if (hasWinner && bothScoresEntered) {
-      // Dismiss any existing toasts before showing a new one
-      dismiss();
-      
       toast({
         title: "Game Point!",
         description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
@@ -104,7 +101,7 @@ const MatchScreen: React.FC = () => {
         ),
       });
     }
-  }, [westScore, eastScore, dismiss, toast, handleEndGame]);
+  }, [westScore, eastScore]);
 
   // Get team players
   const westPlayer1 = getPlayer(matchData?.westPlayer1Id);

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { useLocation, useRoute } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { Player, Match } from '@shared/schema';
@@ -12,12 +12,7 @@ const ResultScreen: React.FC = () => {
   const [, navigate] = useLocation();
   const [match, params] = useRoute<{ id: string }>('/result/:id');
   const matchId = parseInt(params?.id || '0');
-  const { toast, dismiss } = useToast();
-  
-  // Dismiss any existing toasts (like the Game Point toast) when component mounts
-  useEffect(() => {
-    dismiss();
-  }, [dismiss]);
+  const { toast } = useToast();
 
   const resultCardRef = useRef<HTMLDivElement>(null);
   const [isSharing, setIsSharing] = useState(false);
@@ -29,7 +24,7 @@ const ResultScreen: React.FC = () => {
   });
 
   // Fetch sets data
-  const { data: sets } = useQuery<any[]>({
+  const { data: sets } = useQuery<Set[]>({
     queryKey: [`/api/matches/${matchId}/sets`],
     enabled: matchId > 0,
   });
