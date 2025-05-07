@@ -41,7 +41,9 @@ const TeamSection: React.FC<TeamSectionProps> = ({
         <h4 className={`font-arcade text-sm mb-4 ${textColor}`}>ALL PLAYERS</h4>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {players.map((player) => (
+          {[...players]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((player) => (
             <div 
               key={player.id}
               className={`player-item p-2 cursor-pointer transition-colors duration-200 tap-highlight ${
