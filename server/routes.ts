@@ -131,12 +131,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
               {
                 rating: westPlayer.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: westPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: westPlayer.volatility !== undefined ? westPlayer.volatility : ratingEngine.getInitialRating().volatility.toString()
+                volatility: westPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
               },
               eastPlayers.map(p => ({
                 rating: p?.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: p?.volatility !== undefined ? p.volatility : ratingEngine.getInitialRating().volatility.toString()
+                volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
               })),
               [westResult, westResult],
               [scoreDiff, scoreDiff]
@@ -328,7 +328,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const newRating = (player.rating || settings.initialRating) + settings.dailyBonusAmount;
         await storage.updatePlayer(player.id, {
           rating: newRating,
-          lastPointsReset: new Date()
+          ratingDeviation: player.ratingDeviation,
+          volatility: player.volatility
         });
 
         // Track the award date

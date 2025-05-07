@@ -55,7 +55,7 @@ export class PostgresStorage implements IStorage {
       await this.updatePlayer(player.id, {
         rating: ratingEngine.getInitialRating().rating,
         ratingDeviation: ratingEngine.getInitialRating().ratingDeviation,
-        volatility: ratingEngine.getInitialRating().volatility
+        volatility: ratingEngine.getInitialRating().volatility.toString()
       });
     }
   }
@@ -126,13 +126,13 @@ export class PostgresStorage implements IStorage {
     return player;
   }
 
-  async updatePlayer(id: number, ratingData: { rating: number; ratingDeviation: number; volatility: number }): Promise<Player> {
+  async updatePlayer(id: number, ratingData: { rating: number; ratingDeviation: number; volatility: number | string }): Promise<Player> {
     const [updatedPlayer] = await this.db
       .update(players)
       .set({
         rating: ratingData.rating,
         ratingDeviation: ratingData.ratingDeviation,
-        volatility: String(ratingData.volatility) // Convert to string
+        volatility: typeof ratingData.volatility === 'number' ? String(ratingData.volatility) : ratingData.volatility
       })
       .where(eq(players.id, id))
       .returning();
