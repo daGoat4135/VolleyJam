@@ -27,7 +27,7 @@ export const players = pgTable("players", {
   avatarUrl: text("avatar_url").notNull(),
   rating: integer("rating"),
   ratingDeviation: integer("rating_deviation"),
-  volatility: integer("volatility"),
+  volatility: text("volatility"),
   dailyPoints: integer("daily_points").default(0),
   lastPointsReset: timestamp("last_points_reset"),
 });

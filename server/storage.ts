@@ -119,7 +119,7 @@ export class PostgresStorage implements IStorage {
         ...insertPlayer,
         rating: ratingEngine.getInitialRating().rating,
         ratingDeviation: ratingEngine.getInitialRating().ratingDeviation,
-        volatility: ratingEngine.getInitialRating().volatility,
+        volatility: String(ratingEngine.getInitialRating().volatility), // Convert to string
         dailyPoints: 0
       })
       .returning();
@@ -129,7 +129,11 @@ export class PostgresStorage implements IStorage {
   async updatePlayer(id: number, ratingData: { rating: number; ratingDeviation: number; volatility: number }): Promise<Player> {
     const [updatedPlayer] = await this.db
       .update(players)
-      .set(ratingData)
+      .set({
+        rating: ratingData.rating,
+        ratingDeviation: ratingData.ratingDeviation,
+        volatility: String(ratingData.volatility) // Convert to string
+      })
       .where(eq(players.id, id))
       .returning();
       
