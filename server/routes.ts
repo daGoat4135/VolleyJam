@@ -151,12 +151,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
               {
                 rating: eastPlayer.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: eastPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: eastPlayer.volatility !== undefined ? eastPlayer.volatility : ratingEngine.getInitialRating().volatility.toString()
+                volatility: eastPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
               },
               westPlayers.map(p => ({
                 rating: p?.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: p?.volatility !== undefined ? p.volatility : ratingEngine.getInitialRating().volatility.toString()
+                volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
               })),
               [eastResult, eastResult],
               [scoreDiff, scoreDiff]
@@ -322,14 +322,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const [winner] = winners;
       const winnerId = winner.playerId;
       const settings = ratingEngine.getSettings();
-      const player = await storage.getPlayer(parseInt(winnerId));
+      const player = await storage.getPlayer(winnerId);
 
       if (player) {
         const newRating = (player.rating || settings.initialRating) + settings.dailyBonusAmount;
         await storage.updatePlayer(player.id, {
           rating: newRating,
-          ratingDeviation: player.ratingDeviation,
-          volatility: player.volatility
+          ratingDeviation: player.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
+          volatility: player.volatility || ratingEngine.getInitialRating().volatility.toString()
         });
 
         // Track the award date
