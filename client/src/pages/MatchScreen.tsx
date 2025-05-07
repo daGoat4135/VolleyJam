@@ -88,7 +88,7 @@ const MatchScreen: React.FC = () => {
     const bothScoresEntered = westScore > 0 && eastScore > 0;
 
     if (hasWinner && bothScoresEntered) {
-      // Set a timeout to auto-dismiss the toast
+      // Create the toast and get its dismiss function
       const { dismiss } = toast({
         title: "Game Point!",
         description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
@@ -103,8 +103,12 @@ const MatchScreen: React.FC = () => {
             END GAME
           </Button>
         ),
-        duration: 4000, // Set duration explicitly
       });
+      
+      // Force dismiss after 4 seconds
+      setTimeout(() => {
+        dismiss();
+      }, 4000);
     }
   }, [westScore, eastScore]);
 
