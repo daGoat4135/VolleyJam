@@ -76,21 +76,21 @@ export default function AdminScreen() {
             Export Data (CSV)
           </Button>
         </div>
-        <div className="flex justify-center space-x-4">
+        <div className="flex flex-col items-center space-y-4">
           <Button
-            className="font-arcade px-6 py-2 bg-[#FF4D4D] text-black hover:bg-opacity-80"
+            className="font-arcade w-64 px-6 py-2 bg-[#FF4D4D] text-black hover:bg-opacity-80"
             onClick={() => navigate('/')}
           >
             BACK TO SELECTION
           </Button>
           <Button
-            className="font-arcade px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
+            className="font-arcade w-64 px-6 py-2 bg-[#FFD700] text-black hover:bg-opacity-80"
             onClick={() => navigate('/leaderboard')}
           >
             VIEW LEADERBOARD
           </Button>
           <Button
-            className="font-arcade px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
+            className="font-arcade w-64 px-6 py-2 bg-[#4D4DFF] text-white hover:bg-opacity-80"
             onClick={() => navigate('/game-history')}
           >
             GAME HISTORY
