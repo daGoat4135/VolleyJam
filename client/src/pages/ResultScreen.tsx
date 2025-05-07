@@ -24,7 +24,7 @@ const ResultScreen: React.FC = () => {
   });
 
   // Fetch sets data
-  const { data: sets } = useQuery<GameSet[]>({
+  const { data: sets } = useQuery<Set[]>({
     queryKey: [`/api/matches/${matchId}/sets`],
     enabled: matchId > 0,
   });
