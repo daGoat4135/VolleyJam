@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useLocation, useRoute } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { Player, Match } from '@shared/schema';
+import { Player, Match, Set } from '@shared/schema';
 import { Button } from '@/components/ui/button';
 import { PixelBorder } from '@/components/ui/pixel-border';
 import { useToast } from '@/hooks/use-toast';
@@ -24,7 +24,7 @@ const ResultScreen: React.FC = () => {
   });
 
   // Fetch sets data
-  const { data: sets } = useQuery<Set[]>({
+  const { data: sets } = useQuery<GameSet[]>({
     queryKey: [`/api/matches/${matchId}/sets`],
     enabled: matchId > 0,
   });
