@@ -131,7 +131,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const westResult = isWestWinner ? 1 : 0;
           const eastResult = isWestWinner ? 0 : 1;
           
-          // Process west players
+          // Calculate team average ratings
+          const getTeamAverage = (players: (Player | undefined)[]) => {
+            const validPlayers = players.filter((p): p is Player => p !== null && p !== undefined);
+            return {
+              rating: validPlayers.reduce((sum, p) => sum + (p.rating || ratingEngine.getInitialRating().rating), 0) / validPlayers.length,
+              ratingDeviation: validPlayers.reduce((sum, p) => sum + (p.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation), 0) / validPlayers.length,
+              volatility: "0.06" // Use default volatility for team average
+            };
+          };
+
+          const eastTeamRating = getTeamAverage(eastPlayers);
+          
+          // Process west players using team average opponent rating
           for (const westPlayer of westPlayers) {
             if (westPlayer) {
               try {
@@ -143,13 +155,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     ratingDeviation: westPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
                     volatility: westPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
                   },
-                  eastPlayers.map(p => ({
-                    rating: p?.rating || ratingEngine.getInitialRating().rating,
-                    ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                    volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
-                  })),
-                  [westResult, westResult],
-                  [scoreDiff, scoreDiff]
+                  [eastTeamRating], // Just use team average rating once
+                  [westResult],
+                  [scoreDiff]
                 );
                 
                 await storage.updatePlayer(westPlayer.id, newRating);
@@ -161,7 +169,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
 
-          // Process east players
+          // Calculate west team average rating
+          const westTeamRating = getTeamAverage(westPlayers);
+          
+          // Process east players using team average opponent rating
           for (const eastPlayer of eastPlayers) {
             if (eastPlayer) {
               try {
@@ -173,13 +184,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     ratingDeviation: eastPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
                     volatility: eastPlayer.volatility || ratingEngine.getInitialRating().volatility.toString()
                   },
-                  westPlayers.map(p => ({
-                    rating: p?.rating || ratingEngine.getInitialRating().rating,
-                    ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                    volatility: p?.volatility || ratingEngine.getInitialRating().volatility.toString()
-                  })),
-                  [eastResult, eastResult],
-                  [scoreDiff, scoreDiff]
+                  [westTeamRating], // Just use team average rating once
+                  [eastResult],
+                  [scoreDiff]
                 );
                 
                 await storage.updatePlayer(eastPlayer.id, newRating);
