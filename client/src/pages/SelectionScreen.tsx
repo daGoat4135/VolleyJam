@@ -102,7 +102,7 @@ const SelectionScreen: React.FC = () => {
   }, [selectedWestPlayers, selectedEastPlayers]);
 
   return (
-    <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4">
+    <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4 mx-auto">
       <div className="mt-8 mb-6 text-center">
         <Button
           onClick={() => navigate('/leaderboard')}
