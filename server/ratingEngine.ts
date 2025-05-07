@@ -9,7 +9,7 @@ interface RatingSettings {
 interface PlayerRating {
   rating: number;
   ratingDeviation: number;
-  volatility: number;
+  volatility: number | string;
 }
 
 class RatingEngine {
@@ -60,7 +60,9 @@ class RatingEngine {
     });
     const μ = player.rating;
     const φ = player.ratingDeviation;
-    const σ = player.volatility;
+    // Convert volatility to number if it's a string
+    const σ = typeof player.volatility === 'string' ? parseFloat(player.volatility) : player.volatility;
+    
     const v = this.calculateV(μ, φ, opponents);
     const Δ = this.calculateDelta(v, μ, φ, opponents, scores, pointDiffs);
     const σ_new = this.calculateNewVolatility(σ, Δ, v, φ);
@@ -80,7 +82,7 @@ class RatingEngine {
     return {
       rating: μ_new,
       ratingDeviation: φ_new,
-      volatility: σ_new
+      volatility: σ_new.toString() // Convert to string for storage
     };
   }
 

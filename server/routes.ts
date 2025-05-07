@@ -131,12 +131,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
               {
                 rating: westPlayer.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: westPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: westPlayer.volatility || ratingEngine.getInitialRating().volatility
+                volatility: westPlayer.volatility !== undefined ? westPlayer.volatility : ratingEngine.getInitialRating().volatility.toString()
               },
               eastPlayers.map(p => ({
                 rating: p?.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: p?.volatility || ratingEngine.getInitialRating().volatility
+                volatility: p?.volatility !== undefined ? p.volatility : ratingEngine.getInitialRating().volatility.toString()
               })),
               [westResult, westResult],
               [scoreDiff, scoreDiff]
@@ -151,12 +151,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
               {
                 rating: eastPlayer.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: eastPlayer.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: eastPlayer.volatility || ratingEngine.getInitialRating().volatility
+                volatility: eastPlayer.volatility !== undefined ? eastPlayer.volatility : ratingEngine.getInitialRating().volatility.toString()
               },
               westPlayers.map(p => ({
                 rating: p?.rating || ratingEngine.getInitialRating().rating,
                 ratingDeviation: p?.ratingDeviation || ratingEngine.getInitialRating().ratingDeviation,
-                volatility: p?.volatility || ratingEngine.getInitialRating().volatility
+                volatility: p?.volatility !== undefined ? p.volatility : ratingEngine.getInitialRating().volatility.toString()
               })),
               [eastResult, eastResult],
               [scoreDiff, scoreDiff]
