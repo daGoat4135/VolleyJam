@@ -133,7 +133,7 @@ export default function GameHistoryScreen() {
                         <TableCell className="text-[#4D4DFF]">
                           {eastPlayer1} / {eastPlayer2}
                         </TableCell>
-                        <TableCell className="font-digital">
+                        <TableCell className="font-digital text-white">
                           {match.westScore || 0} - {match.eastScore || 0}
                         </TableCell>
                         <TableCell>
