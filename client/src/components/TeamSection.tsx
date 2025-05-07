@@ -40,7 +40,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
       <div className={`available-players p-3 border-2 ${borderColor} mb-6`}>
         <h4 className={`font-arcade text-sm mb-4 ${textColor}`}>ALL PLAYERS</h4>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 place-items-center">
           {[...players]
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((player) => (

@@ -102,8 +102,8 @@ const SelectionScreen: React.FC = () => {
   }, [selectedWestPlayers, selectedEastPlayers]);
 
   return (
-    <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4 mx-auto">
-      <div className="mt-8 mb-6 text-center">
+    <div id="selection-screen" className="screen-container active-screen w-full max-w-6xl px-4 mx-auto flex flex-col items-center">
+      <div className="mt-8 mb-6 text-center w-full">
         <Button
           onClick={() => navigate('/leaderboard')}
           className="font-arcade mb-6 bg-[#FFD700] text-black hover:bg-opacity-80"
