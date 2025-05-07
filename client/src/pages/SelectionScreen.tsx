@@ -118,7 +118,7 @@ const SelectionScreen: React.FC = () => {
         {/* Team 1 */}
         <TeamSection
           division="west"
-          players={allPlayers}
+          players={allPlayers.filter(player => player.division === 'west')}
           selectedPlayers={selectedWestPlayers}
           onPlayerSelect={handleWestPlayerSelect}
         />
@@ -133,7 +133,7 @@ const SelectionScreen: React.FC = () => {
         {/* Team 2 */}
         <TeamSection
           division="east"
-          players={allPlayers}
+          players={allPlayers.filter(player => player.division === 'east')}
           selectedPlayers={selectedEastPlayers}
           onPlayerSelect={handleEastPlayerSelect}
         />
