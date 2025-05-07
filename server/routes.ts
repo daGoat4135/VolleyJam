@@ -171,7 +171,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid match data", errors: error.errors });
       }
-      res.status(500).json({ message: "Failed to update match" });
+      console.error("Error updating match:", error);
+      res.status(500).json({ message: "Failed to update match", error: error instanceof Error ? error.message : String(error) });
     }
   });
 
