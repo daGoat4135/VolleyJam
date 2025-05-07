@@ -88,17 +88,22 @@ const MatchScreen: React.FC = () => {
     const bothScoresEntered = westScore > 0 && eastScore > 0;
 
     if (hasWinner && bothScoresEntered) {
-      toast({
+      // Set a timeout to auto-dismiss the toast
+      const { dismiss } = toast({
         title: "Game Point!",
         description: `${westScore > eastScore ? 'WEST' : 'EAST'} wins!`,
         action: (
           <Button
-            onClick={handleEndGame}
+            onClick={() => {
+              handleEndGame();
+              dismiss(); // Dismiss the toast when the button is clicked
+            }}
             className="font-arcade px-4 py-2 bg-[#4169E1] text-white rounded hover:bg-opacity-80"
           >
             END GAME
           </Button>
         ),
+        duration: 4000, // Set duration explicitly
       });
     }
   }, [westScore, eastScore]);
