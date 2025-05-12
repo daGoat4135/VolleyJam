@@ -68,17 +68,42 @@ const MatchScreen: React.FC = () => {
 
   const handleEndGame = () => {
     const winningDivision = westScore > eastScore ? 'west' : 'east';
-
-    // Update match as complete
-    updateMatchMutation.mutate({
-      isComplete: true,
-      winningDivision,
-      westScore,
-      eastScore
+    const winningTeam = winningDivision === 'west' 
+      ? `${westPlayer1?.name} & ${westPlayer2?.name}`
+      : `${eastPlayer1?.name} & ${eastPlayer2?.name}`;
+    
+    const confirmMessage = `Confirm Game Results:\n${westPlayer1?.name} & ${westPlayer2?.name} (WEST): ${westScore}\n${eastPlayer1?.name} & ${eastPlayer2?.name} (EAST): ${eastScore}\n\nWinner: ${winningTeam}`;
+    
+    const { dismiss } = toast({
+      title: "Confirm Results",
+      description: confirmMessage,
+      action: (
+        <div className="flex gap-2">
+          <Button
+            onClick={() => {
+              // Update match as complete
+              updateMatchMutation.mutate({
+                isComplete: true,
+                winningDivision,
+                westScore,
+                eastScore
+              });
+              playSound('win');
+              dismiss();
+            }}
+            className="font-arcade px-4 py-2 bg-[#4169E1] text-white rounded hover:bg-opacity-80"
+          >
+            CONFIRM
+          </Button>
+          <Button
+            onClick={() => dismiss()}
+            className="font-arcade px-4 py-2 bg-gray-500 text-white rounded hover:bg-opacity-80"
+          >
+            CANCEL
+          </Button>
+        </div>
+      ),
     });
-
-
-    playSound('win');
   };
 
   // Check for win condition
