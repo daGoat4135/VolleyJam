@@ -146,14 +146,30 @@ export default function GameHistoryScreen() {
                           )}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button 
-                            variant="outline"
-                            size="sm"
-                            onClick={() => viewMatchDetails(match.id)}
-                            className="text-white border-white hover:bg-gray-700"
-                          >
-                            View Details
-                          </Button>
+                          <div className="flex justify-end gap-2">
+                            <Button 
+                              variant="outline"
+                              size="sm"
+                              onClick={() => viewMatchDetails(match.id)}
+                              className="text-white border-white hover:bg-gray-700"
+                            >
+                              View Details
+                            </Button>
+                            {!match.isComplete && (
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={async () => {
+                                  if (window.confirm('Are you sure you want to delete this in-progress match?')) {
+                                    await fetch(`/api/matches/${match.id}`, { method: 'DELETE' });
+                                    window.location.reload();
+                                  }
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            )}
+                          </div>
                         </TableCell>
                       </TableRow>
                     );

@@ -80,6 +80,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(match);
   });
 
+  // Delete a specific match
+  app.delete("/api/matches/:id", async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "Invalid match ID" });
+    }
+
+    try {
+      await storage.deleteMatch(id);
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete match" });
+    }
+  });
+
   // Update match (for completing or setting MVP)
   app.patch("/api/matches/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
