@@ -82,25 +82,7 @@ const MatchScreen: React.FC = () => {
           <Button
             onClick={async () => {
               dismiss();
-              
-              // Show full screen loading animation
-              const overlay = document.createElement('div');
-              overlay.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center';
-              overlay.innerHTML = `
-                <div class="text-center">
-                  <h2 class="font-arcade text-4xl text-[#FFD700] mb-4 animate-pulse">GAME OVER!</h2>
-                  <div class="font-digital text-2xl text-white">
-                    ${westPlayer1?.name} & ${westPlayer2?.name} ${westScore} - ${eastScore} ${eastPlayer1?.name} & ${eastPlayer2?.name}
-                  </div>
-                </div>
-              `;
-              document.body.appendChild(overlay);
-              
-              // Play win sound
               playSound('win');
-              
-              // Update match after delay
-              await new Promise(resolve => setTimeout(resolve, 2000));
               
               updateMatchMutation.mutate({
                 isComplete: true,
