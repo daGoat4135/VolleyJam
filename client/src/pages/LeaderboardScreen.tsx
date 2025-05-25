@@ -5,6 +5,7 @@ import { Player, Match } from '@shared/schema';
 import { Button } from '@/components/ui/button';
 import { ChromeText } from '@/components/ui/chrome-text';
 import { PixelBorder } from '@/components/ui/pixel-border';
+import { TrophyIcon } from '@/components/ui/trophy-icon';
 
 interface PlayerStats {
   player: Player;
@@ -113,8 +114,9 @@ const LeaderboardScreen: React.FC = () => {
                 key={stat.player.id}
                 className="player-stat flex items-center bg-black p-3 border border-gray-800"
               >
-                <div className="rank font-digital text-xl mr-4 text-[#FFD700] w-8 text-center">
+                <div className="rank font-digital text-xl mr-4 text-[#FFD700] w-8 text-center flex items-center justify-center">
                   {index + 1}
+                  {index === 0 && <TrophyIcon className="w-6 h-6 text-[#FFD700] ml-2 animate-pulse" />}
                 </div>
                 <div className="player-image mr-4">
                   <PixelBorder>
