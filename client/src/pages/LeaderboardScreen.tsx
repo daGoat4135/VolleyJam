@@ -116,7 +116,7 @@ const LeaderboardScreen: React.FC = () => {
               >
                 <div className="rank font-digital text-xl mr-4 text-[#FFD700] w-8 text-center flex items-center justify-center">
                   {index + 1}
-                  {index === 0 && <TrophyIcon className="w-6 h-6 text-[#FFD700] ml-2 animate-pulse" />}
+                  {index === 0 && <span className="ml-2 animate-pulse">🏆</span>}
                 </div>
                 <div className="player-image mr-4">
                   <PixelBorder>
